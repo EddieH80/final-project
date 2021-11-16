@@ -14,7 +14,7 @@ My final project is motivated by a Chinese painting of some horses by an artist 
 
 #### Goal
 
-Create a shader in WebGL that takes in an SDF scene and stylizes the appearance of the geometry to make it look like a traditional Chinese ink painting.
+Create a shader in WebGL that takes in an SDF scene and stylizes the appearance of the geometry to make it look like a traditional Chinese ink painting. Specifically will create a horse SDF scene to mimic the inspiration paintings.
 
 #### Inspiration/reference:
 
