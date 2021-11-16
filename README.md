@@ -48,7 +48,9 @@ References:
 
 #### Timeline:
 Week 1: Create entire SDF scene with basic shading
+
 Week 2: Create vertex shader and fragment shader that create the ink painting effect
+
 Week 3: Fine tune details, can add basic elements to background, make another simple scene
 
 
