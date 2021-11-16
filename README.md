@@ -9,26 +9,48 @@ Before submitting your first milestone, _you must get your project idea and scop
 Start off by forking this repository. In your README, write a design doc to outline your project goals and implementation plan. It must include the following sections:
 
 #### Introduction
-- What motivates your project?
+
+My final project is motivated by a Chinese painting of some horses by an artist named 徐悲鴻 (Xu Beihong) that was in my house when I was growing up as a kid. It is also inspired by Grace’s Watercolor Shader that was demoed as an example of a final project from past years, which I thought was really cool. I think it would be cool to be able to take an SDF scene and recreate it into a stylized version that is similar to that of an ink painting.
 
 #### Goal
-- What do you intend to achieve with this project?
+
+Create a shader in WebGL that takes in an SDF scene and stylizes the appearance of the geometry to make it look like a traditional Chinese ink painting.
 
 #### Inspiration/reference:
-- You must have some form of reference material for your final project. Your reference may be a research paper, a blog post, some artwork, a video, another class at Penn, etc.  
-- Include in your design doc links to and images of your reference material.
+
+Picture of the painting at home:
+
+Picture of just one horse by same artist:
+
+References:
+
+- CIS 566 Color Slides
+- Hatching GLSL (https://www.youtube.com/watch?v=ml9v8PZ5j10&ab_channel=helloworld)
+- NPR Rendering (https://www.youtube.com/watch?v=gT9qU_fJNuw&ab_channel=ChrisKnott)
+- NPR Example Shader (https://www.shadertoy.com/view/MscSzf)
+- NPR Paper (https://www.researchgate.net/publication/236973460_Non-Photorealistic_Rendering)
+
 
 #### Specification:
-- Outline the main features of your project.
+- Ink Shader
+- Choose different scenes
+- Change intensity of shader's effect
 
 #### Techniques:
-- What are the main technical/algorithmic tools you’ll be using? Give an overview, citing specific papers/articles.
+- Raymarching
+- SDFs
+- Noise Functions
+- Color Bleeding
+- Edge Darkening
 
 #### Design:
 - How will your program fit together? Make a simple free-body diagram illustrating the pieces.
 
 #### Timeline:
-- Create a week-by-week set of milestones for each person in your group. Make sure you explicitly outline what each group member's duties will be.
+Week 1: Create entire SDF scene with basic shading
+Week 2: Create vertex shader and fragment shader that create the ink painting effect
+Week 3: Fine tune details, can add basic elements to background, make another simple scene
+
 
 Submit your Design doc as usual via pull request against this repository.
 ## Milestone 2: Implementation part 1 (due 11/22)
