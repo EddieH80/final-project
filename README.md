@@ -20,9 +20,15 @@ Create a shader in WebGL that takes in an SDF scene and stylizes the appearance 
 
 Picture of the painting at home:
 
+![](Horse.jpeg)
+
 Picture of just one horse by same artist:
 
+![](One Horse.png)
+
 References:
+
+![](Example1.png)
 
 - CIS 566 Color Slides
 - Hatching GLSL (https://www.youtube.com/watch?v=ml9v8PZ5j10&ab_channel=helloworld)
@@ -44,7 +50,7 @@ References:
 - Edge Darkening
 
 #### Design:
-- How will your program fit together? Make a simple free-body diagram illustrating the pieces.
+![](Flow Chart.png)
 
 #### Timeline:
 Week 1: Create entire SDF scene with basic shading
