@@ -20,11 +20,11 @@ Create a shader in WebGL that takes in an SDF scene and stylizes the appearance 
 
 Picture of the painting at home:
 
-![](Horse.jpeg)
+![](Horse.png)
 
 Picture of just one horse by same artist:
 
-![](One Horse.png)
+![](OneHorse.png)
 
 References:
 
@@ -50,7 +50,7 @@ References:
 - Edge Darkening
 
 #### Design:
-![](Flow Chart.png)
+![](FlowChart.png)
 
 #### Timeline:
 Week 1: Create entire SDF scene with basic shading
