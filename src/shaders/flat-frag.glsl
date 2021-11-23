@@ -32,13 +32,21 @@ const int RAY_STEPS = 256;
 
 #define BACK_LEFT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(-9.2, 8.0, -10.0), -7.5), 0.5, 1.2, 6.0)
 #define BACK_LEFT_LEG_KNEE_SDF smoothBlend(BACK_RIGHT_LEG_TOP_SDF, sphere(pos + vec3(-9.2, 8.0, -10.0), 0.5), 0.5)
-#define BACK_LEFT_LEG_SHIN_SDF smoothBlend(BACK_RIGHT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-9.4, 10.5, -10.8), 0.3, 0.1, 3.0), 0.5)
-#define BACK_LEFT_LEG_SDF smoothBlend(BACK_RIGHT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-9.4, 13.0, -10.8), 0.4, 0.2, 0.5), 0.5)
+#define BACK_LEFT_LEG_SHIN_SDF smoothBlend(BACK_RIGHT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-9.4, 10.5, -10.0), 0.3, 0.1, 3.0), 0.5)
+#define BACK_LEFT_LEG_SDF smoothBlend(BACK_RIGHT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-9.4, 13.0, -10.0), 0.4, 0.2, 0.5), 0.5)
 
 #define BACK_RIGHT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(-5.0, 8.0, -11.0), 7.5), 0.5, 1.2, 6.0)
 #define BACK_RIGHT_LEG_KNEE_SDF smoothBlend(BACK_LEFT_LEG_TOP_SDF, sphere(pos + vec3(-5.0, 8.0, -11.0), 0.5), 0.5)
-#define BACK_RIGHT_LEG_SHIN_SDF smoothBlend(BACK_LEFT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-5.2, 10.5, -11.8), 0.3, 0.1, 3.0), 0.5)
-#define BACK_RIGHT_LEG_SDF smoothBlend(BACK_LEFT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-5.2, 13.0, -11.8), 0.4, 0.2, 0.5), 0.5)
+#define BACK_RIGHT_LEG_SHIN_SDF smoothBlend(BACK_LEFT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-5.2, 10.5, -11.0), 0.3, 0.1, 3.0), 0.5)
+#define BACK_RIGHT_LEG_SDF smoothBlend(BACK_LEFT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-5.2, 13.0, -11.0), 0.4, 0.2, 0.5), 0.5)
+
+// HEAD
+#define LEFT_EAR_SDF smoothBlend(HIND_SDF, roundCone(pos + vec3(-1.2, -9.0, 6.5), 0.5, 0.2, 0.6), 0.5)
+#define RIGHT_EAR_SDF smoothBlend(LEFT_EAR_SDF, roundCone(pos + vec3(1.2, -9.0, 6.5), 0.5, 0.2, 0.6), 0.5)
+#define NECK_SDF smoothBlend(RIGHT_EAR_SDF, roundCone(rotateX(pos + vec3(0.0, 0.0, 1.0), 30.0), 2.2, 1.9, 8.0), 0.5)
+#define MOUTH_SDF smoothBlend(NECK_SDF, roundCone(rotateX(pos + vec3(0.0, -7.0, 6.0), 140.0), 2.2, 1.4, 3.8), 0.5)
+#define MOUTH_END_SDF smoothBlend(MOUTH_SDF, sphere(pos + vec3(0.0, -4.0, 8.5), 1.0), 0.5)
+#define HEAD_SDF smoothBlend(MOUTH_END_SDF, sphere(pos + vec3(0.0, -7.0, 6.0), 2.2), 0.5)
 ////////// GEOMETRY ENDS //////////
 
 #define CHEST 0
@@ -48,6 +56,7 @@ const int RAY_STEPS = 256;
 #define FRONT_RIGHT_LEG 4
 #define BACK_LEFT_LEG 5
 #define BACK_RIGHT_LEG 6
+#define HEAD 7
 
 ////////// SDFS //////////
 float sphere(vec3 p, float s) {
@@ -284,6 +293,9 @@ float findClosestObject(vec3 pos, vec3 lightPos) {
     t = min(t, HIND_SDF);
     t = min(t, FRONT_LEFT_LEG_SDF);
     t = min(t, FRONT_RIGHT_LEG_SDF);
+    t = min(t, BACK_LEFT_LEG_SDF);
+    t = min(t, BACK_RIGHT_LEG_SDF);
+    t = min(t, HEAD_SDF);
     return t;
 }
 
@@ -317,6 +329,10 @@ void findClosestObject(vec3 pos, out float t, out int obj, vec3 lightPos) {
       if((t2 = BACK_RIGHT_LEG_SDF) < t) {
           t = t2;
           obj = BACK_RIGHT_LEG;
+      }
+      if((t2 = HEAD_SDF) < t) {
+          t = t2;
+          obj = HEAD;
       }
     }
 }
@@ -368,6 +384,7 @@ vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
         case FRONT_RIGHT_LEG:
         case BACK_LEFT_LEG:
         case BACK_RIGHT_LEG:
+        case HEAD:
         return vec3(0.65, 0.6, 0.6) * lambert;
         break;
     }
