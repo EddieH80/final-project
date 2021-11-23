@@ -14,7 +14,7 @@ My final project is motivated by a Chinese painting of some horses by an artist 
 
 #### Goal
 
-Create a shader in WebGL that takes in an SDF scene and stylizes the appearance of the geometry to make it look like a traditional Chinese ink painting.
+Create a shader in WebGL that takes in an SDF scene and stylizes the appearance of the geometry to make it look like a traditional Chinese ink painting. Specifically will create a horse SDF scene to mimic the inspiration paintings.
 
 #### Inspiration/reference:
 
@@ -30,35 +30,44 @@ References:
 
 ![](Example1.png)
 
-- CIS 566 Color Slides
+- Color Slides (https://cis566-procedural-graphics.github.io/color.pdf)
 - Hatching GLSL (https://www.youtube.com/watch?v=ml9v8PZ5j10&ab_channel=helloworld)
 - NPR Rendering (https://www.youtube.com/watch?v=gT9qU_fJNuw&ab_channel=ChrisKnott)
 - NPR Example Shader (https://www.shadertoy.com/view/MscSzf)
 - NPR Paper (https://www.researchgate.net/publication/236973460_Non-Photorealistic_Rendering)
+- Watercolor Shader (https://github.com/gracelgilbert/watercolor-stylization)
 
 
 #### Specification:
 - Ink Shader
-- Choose different scenes
-- Change intensity of shader's effect
+- User Input
+  - Change intensity of color bleeding
+  - Change intensit of edge darkening
+  - Change intensity of hand tremors
 
 #### Techniques:
 - Raymarching
+  - Main method to render scene by marching rays along scene until running into objects
 - SDFs
+  - Used to determine the ray's distance between objects in the scene
 - Noise Functions
+  - Used to displace vertices to mimic the effect of a brush stroke 
 - Color Bleeding
+  - Used to mimic the effect of the ink bleeding on the page by directly deforming the geometry using noise
 - Edge Darkening
+  - Taking the difference of the Gaussian blur of the image and the regular image and exponentiating it to darken the edges
+- Gaussian Blur
+  - To add a smear effect in some portions of the scene 
 
 #### Design:
 ![](FlowChart.png)
 
 #### Timeline:
-Week 1: Create entire SDF scene with basic shading
+Week 1: Create main SDF scene with basic shading
 
 Week 2: Create vertex shader and fragment shader that create the ink painting effect
 
-Week 3: Fine tune details, can add basic elements to background, make another simple scene
-
+Week 3: Fine tune details, can add basic elements to background
 
 Submit your Design doc as usual via pull request against this repository.
 ## Milestone 2: Implementation part 1 (due 11/22)
