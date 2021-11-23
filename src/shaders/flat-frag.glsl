@@ -30,15 +30,15 @@ const int RAY_STEPS = 256;
 #define FRONT_RIGHT_LEG_SHIN_SDF smoothBlend(FRONT_RIGHT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-3.5, 10.5, 0.2), 0.3, 0.1, 3.0), 0.5)
 #define FRONT_RIGHT_LEG_SDF smoothBlend(FRONT_RIGHT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-3.5, 13.0, 0.2), 0.4, 0.2, 0.5), 0.5)
 
-#define BACK_LEFT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(3.2, 8.0, -15.0), 7.5), 0.5, 1.2, 6.0)
-#define BACK_LEFT_LEG_KNEE_SDF smoothBlend(BACK_LEFT_LEG_TOP_SDF, sphere(pos + vec3(3.4, 8.0, -15.0), 0.5), 0.5)
-#define BACK_LEFT_LEG_SHIN_SDF smoothBlend(BACK_LEFT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(3.5, 10.5, -15.8), 0.3, 0.1, 3.0), 0.5)
-#define BACK_LEFT_LEG_SDF smoothBlend(BACK_LEFT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(3.5, 13.0, -15.8), 0.4, 0.2, 0.5), 0.5)
+#define BACK_LEFT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(-9.2, 8.0, -10.0), -7.5), 0.5, 1.2, 6.0)
+#define BACK_LEFT_LEG_KNEE_SDF smoothBlend(BACK_RIGHT_LEG_TOP_SDF, sphere(pos + vec3(-9.2, 8.0, -10.0), 0.5), 0.5)
+#define BACK_LEFT_LEG_SHIN_SDF smoothBlend(BACK_RIGHT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-9.4, 10.5, -10.8), 0.3, 0.1, 3.0), 0.5)
+#define BACK_LEFT_LEG_SDF smoothBlend(BACK_RIGHT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-9.4, 13.0, -10.8), 0.4, 0.2, 0.5), 0.5)
 
-#define BACK_RIGHT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(-9.2, 8.0, -10.0), -7.5), 0.5, 1.2, 6.0)
-#define BACK_RIGHT_LEG_KNEE_SDF smoothBlend(BACK_RIGHT_LEG_TOP_SDF, sphere(pos + vec3(-9.2, 8.0, -10.0), 0.5), 0.5)
-#define BACK_RIGHT_LEG_SHIN_SDF smoothBlend(BACK_RIGHT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-9.2, 10.5, -10.8), 0.3, 0.1, 3.0), 0.5)
-#define BACK_RIGHT_LEG_SDF smoothBlend(BACK_RIGHT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-9.2, 13.0, -10.8), 0.4, 0.2, 0.5), 0.5)
+#define BACK_RIGHT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(-5.0, 8.0, -11.0), 7.5), 0.5, 1.2, 6.0)
+#define BACK_RIGHT_LEG_KNEE_SDF smoothBlend(BACK_LEFT_LEG_TOP_SDF, sphere(pos + vec3(-5.0, 8.0, -11.0), 0.5), 0.5)
+#define BACK_RIGHT_LEG_SHIN_SDF smoothBlend(BACK_LEFT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-5.2, 10.5, -11.8), 0.3, 0.1, 3.0), 0.5)
+#define BACK_RIGHT_LEG_SDF smoothBlend(BACK_LEFT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-5.2, 13.0, -11.8), 0.4, 0.2, 0.5), 0.5)
 ////////// GEOMETRY ENDS //////////
 
 #define CHEST 0
