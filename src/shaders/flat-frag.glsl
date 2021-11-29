@@ -390,10 +390,14 @@ vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
     //     break;
     // }
     // return vec3(0.5);
-    if(hitObj < 0 || hitObj > 7) {
-      return vec3(0.5);
+    if(hitObj == -1) {
+      return vec3(0.5f);
     }
     float intensity = dot(n, light);
+    float outline = dot(n, view);
+    if (outline < 0.3f && outline >= -0.3f) {
+      return vec3(0.f);
+    }
     if (intensity > 0.8) {
       return vec3(0.8f);
     } else if (intensity > 0.6) {
@@ -401,9 +405,9 @@ vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
     } else if (intensity > 0.2) {
       return vec3(0.4f);
     } else if (intensity > 0.05) {
-      return vec3(0.2f);
+      return vec3(0.3f);
     } else {
-      return vec3(0.f);
+      return vec3(0.2f);
     }
 }
 
