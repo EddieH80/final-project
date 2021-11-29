@@ -5,7 +5,8 @@ uniform vec3 u_Eye, u_Ref, u_Up;
 uniform vec2 u_Dimensions;
 uniform float u_Time;
 
-in vec2 fs_Pos;
+in vec4 fs_Pos;
+in vec4 fs_Nor;
 out vec4 out_Col;
 
 const int RAY_STEPS = 256;
@@ -15,9 +16,9 @@ const int RAY_STEPS = 256;
 
 ////////// GEOMETRY //////////
 // Main Body
-#define CHEST_SDF sphere(pos, 3.0)
+#define CHEST_SDF sphere(pos, 3.5)
 #define TORSO_SDF smoothBlend(CHEST_SDF, ellipsoid(rotateY(pos + vec3(-4.0, 0.0, -5.0), -35.0), vec3(3.5, 3.5, 8.0)), 0.5)
-#define HIND_SDF smoothBlend(TORSO_SDF, sphere(pos + vec3(-7.0, 0.0, -9.0), 3.0), 0.5)
+#define HIND_SDF smoothBlend(TORSO_SDF, sphere(pos + vec3(-7.0, 0.0, -9.0), 3.5), 0.5)
 
 // Legs
 #define FRONT_LEFT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(3.2, 8.0, 0.8), 7.5), 0.5, 1.2, 6.0)
@@ -375,20 +376,35 @@ vec3 computeNormal(vec3 pos, vec3 lightPos) {
 }
 
 vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
-    float lambert = dot(n, light) + 0.3;
-    switch(hitObj) {
-        case CHEST:
-        case TORSO:
-        case HIND:
-        case FRONT_LEFT_LEG:
-        case FRONT_RIGHT_LEG:
-        case BACK_LEFT_LEG:
-        case BACK_RIGHT_LEG:
-        case HEAD:
-        return vec3(0.65, 0.6, 0.6) * lambert;
-        break;
+    // float lambert = dot(n, light) + 0.3;
+    // switch(hitObj) {
+    //     case CHEST:
+    //     case TORSO:
+    //     case HIND:
+    //     case FRONT_LEFT_LEG:
+    //     case FRONT_RIGHT_LEG:
+    //     case BACK_LEFT_LEG:
+    //     case BACK_RIGHT_LEG:
+    //     case HEAD:
+    //     return vec3(0.65, 0.6, 0.6) * lambert;
+    //     break;
+    // }
+    // return vec3(0.5);
+    if(hitObj < 0 || hitObj > 7) {
+      return vec3(0.5);
     }
-    return vec3(0.5);
+    float intensity = dot(n, light);
+    if (intensity > 0.8) {
+      return vec3(0.8f);
+    } else if (intensity > 0.6) {
+      return vec3(0.6f);
+    } else if (intensity > 0.2) {
+      return vec3(0.4f);
+    } else if (intensity > 0.05) {
+      return vec3(0.2f);
+    } else {
+      return vec3(0.f);
+    }
 }
 
 Intersection getIntersection(vec3 dir, vec3 eye, vec3 lightPos) {
@@ -410,7 +426,7 @@ Intersection getIntersection(vec3 dir, vec3 eye, vec3 lightPos) {
 
 
 void main() {
-  Ray r = raycast(fs_Pos);
+  Ray r = raycast(fs_Pos.xy);
   Intersection i = getIntersection(r.direction, r.origin, LIGHT_POS);
   // vec3 color = 0.5 * (r.direction + vec3(1.0, 1.0, 1.0));
 

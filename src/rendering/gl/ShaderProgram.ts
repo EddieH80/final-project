@@ -30,6 +30,10 @@ class ShaderProgram {
   unifDimensions: WebGLUniformLocation;
   unifTime: WebGLUniformLocation;
 
+  unifModel: WebGLUniformLocation;
+  unifModelInvTra: WebGLUniformLocation;
+  unifViewProj: WebGLUniformLocation;
+
   constructor(shaders: Array<Shader>) {
     this.prog = gl.createProgram();
 
@@ -42,11 +46,17 @@ class ShaderProgram {
     }
 
     this.attrPos = gl.getAttribLocation(this.prog, "vs_Pos");
+    this.attrNor = gl.getAttribLocation(this.prog, "vs_Nor");
+
     this.unifEye   = gl.getUniformLocation(this.prog, "u_Eye");
     this.unifRef   = gl.getUniformLocation(this.prog, "u_Ref");
     this.unifUp   = gl.getUniformLocation(this.prog, "u_Up");
     this.unifDimensions   = gl.getUniformLocation(this.prog, "u_Dimensions");
     this.unifTime   = gl.getUniformLocation(this.prog, "u_Time");
+
+    this.unifModel   = gl.getUniformLocation(this.prog, "u_Model");
+    this.unifModelInvTra   = gl.getUniformLocation(this.prog, "u_ModelInvTra");
+    this.unifViewProj   = gl.getUniformLocation(this.prog, "u_ViewProj");
   }
 
   use() {
@@ -80,6 +90,27 @@ class ShaderProgram {
     this.use();
     if(this.unifTime !== -1) {
       gl.uniform1f(this.unifTime, t);
+    }
+  }
+
+  setModelMatrix(model: mat4) {
+    this.use();
+    if (this.unifModel !== -1) {
+      gl.uniformMatrix4fv(this.unifModel, false, model);
+    }
+
+    if (this.unifModelInvTra !== -1) {
+      let modelInvTran: mat4 = mat4.create();
+      mat4.transpose(modelInvTran, model);
+      mat4.invert(modelInvTran, modelInvTran);
+      gl.uniformMatrix4fv(this.unifModelInvTra, false, modelInvTran);
+    }
+  }
+
+  setViewProjMatrix(vp: mat4) {
+    this.use();
+    if (this.unifViewProj !== -1) {
+      gl.uniformMatrix4fv(this.unifViewProj, false, vp);
     }
   }
 
