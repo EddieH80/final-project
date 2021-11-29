@@ -16,9 +16,9 @@ const int RAY_STEPS = 256;
 
 ////////// GEOMETRY //////////
 // Main Body
-#define CHEST_SDF sphere(pos, 3.5)
-#define TORSO_SDF smoothBlend(CHEST_SDF, ellipsoid(rotateY(pos + vec3(-4.0, 0.0, -5.0), -35.0), vec3(3.5, 3.5, 8.0)), 0.5)
-#define HIND_SDF smoothBlend(TORSO_SDF, sphere(pos + vec3(-7.0, 0.0, -9.0), 3.5), 0.5)
+#define CHEST_SDF opDisplaceSin(sphere(pos, 3.5), pos, vec3(1.0))
+#define TORSO_SDF smoothBlend(CHEST_SDF, opDisplaceSin(ellipsoid(rotateY(pos + vec3(-4.0, 0.0, -5.0) + vec3(0.1), -35.0), vec3(3.5, 3.5, 8.0)), pos, vec3(0.4)), 0.5)
+#define HIND_SDF smoothBlend(TORSO_SDF, opDisplaceSin(sphere(pos + vec3(-7.0, 0.0, -9.0), 3.5), pos, vec3(0.3)), 0.5)
 
 // Legs
 #define FRONT_LEFT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(3.2, 8.0, 0.8), 7.5), 0.5, 1.2, 6.0)
@@ -41,7 +41,7 @@ const int RAY_STEPS = 256;
 #define BACK_RIGHT_LEG_SHIN_SDF smoothBlend(BACK_LEFT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-5.2, 10.5, -11.0), 0.3, 0.1, 3.0), 0.5)
 #define BACK_RIGHT_LEG_SDF smoothBlend(BACK_LEFT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-5.2, 13.0, -11.0), 0.4, 0.2, 0.5), 0.5)
 
-// HEAD
+// Head
 #define LEFT_EAR_SDF smoothBlend(HIND_SDF, roundCone(pos + vec3(-1.2, -9.0, 6.5), 0.5, 0.2, 0.6), 0.5)
 #define RIGHT_EAR_SDF smoothBlend(LEFT_EAR_SDF, roundCone(pos + vec3(1.2, -9.0, 6.5), 0.5, 0.2, 0.6), 0.5)
 #define NECK_SDF smoothBlend(RIGHT_EAR_SDF, roundCone(rotateX(pos + vec3(0.0, 0.0, 1.0), 30.0), 2.2, 1.9, 8.0), 0.5)
@@ -122,6 +122,13 @@ float smoothBlend(float sdf1, float sdf2, float k) {
     float h = clamp(0.5f + 0.5f * (sdf2 - sdf1) / k, 0.0f, 1.0f);
     return mix(sdf2, sdf1, h) - k * h * (1.0f - h);
 }
+
+float opDisplaceSin(float sdf, vec3 p, vec3 c) {
+    float d1 = sdf;
+    float d2 = sin(p.x * c.x) * sin(p.y * c.y) * sin(p.z * c.z);
+    return d1 + d2;
+}
+
 ////////// SDFS END //////////
 
 ////////// TRANSFORMATIONS //////////
@@ -160,40 +167,63 @@ float gain(float g, float t) {
 
 
 ////////// NOISE FUNCTIONS //////////
-float noise1D( vec2 p ) {
-    return fract(sin(dot(p, vec2(127.1, 311.7))) *
-                 43758.5453);
+vec3 noise3D(vec3 p) {
+    float val1 = fract(sin((dot(p, vec3(127.1, 311.7, 191.999)))) * 43758.5453);
+
+    float val2 = fract(sin((dot(p, vec3(191.999, 127.1, 311.7)))) * 3758.5453);
+
+    float val3 = fract(sin((dot(p, vec3(311.7, 191.999, 127.1)))) * 758.5453);
+
+    return vec3(val1, val2, val3);
 }
 
-float interpNoise2D(float x, float y) {
+vec3 interpNoise3D(float x, float y, float z) {
     int intX = int(floor(x));
     float fractX = fract(x);
     int intY = int(floor(y));
     float fractY = fract(y);
+    int intZ = int(floor(z));
+    float fractZ = fract(z);
 
-    float v1 = noise1D(vec2(intX, intY));
-    float v2 = noise1D(vec2(intX + 1, intY));
-    float v3 = noise1D(vec2(intX, intY + 1));
-    float v4 = noise1D(vec2(intX + 1, intY + 1));
+    vec3 v1 = noise3D(vec3(intX, intY, intZ));
+    vec3 v2 = noise3D(vec3(intX + 1, intY, intZ));
+    vec3 v3 = noise3D(vec3(intX, intY + 1, intZ));
+    vec3 v4 = noise3D(vec3(intX + 1, intY + 1, intZ));
 
-    float i1 = mix(v1, v2, fractX);
-    float i2 = mix(v3, v4, fractX);
-    return mix(i1, i2, fractY);
+    vec3 v5 = noise3D(vec3(intX, intY, intZ + 1));
+    vec3 v6 = noise3D(vec3(intX + 1, intY, intZ + 1));
+    vec3 v7 = noise3D(vec3(intX, intY + 1, intZ + 1));
+    vec3 v8 = noise3D(vec3(intX + 1, intY + 1, intZ + 1));
+
+    vec3 i1 = mix(v1, v2, fractX);
+    vec3 i2 = mix(v3, v4, fractX);
+
+    vec3 i3 = mix(i1, i2, fractY);
+
+    vec3 i4 = mix(v5, v6, fractX);
+    vec3 i5 = mix(v7, v8, fractX);
+
+    vec3 i6 = mix(i4, i5, fractY);
+
+    vec3 i7 = mix(i3, i6, fractZ);
+
+    return i7;
 }
 
+vec3 fbm(float x, float y, float z) {
+    vec3 total = vec3(0.f, 0.f, 0.f);
 
-float fbm(float x, float y) {
-    float total = 0.0;
-    float persistence = 0.5;
-    int octaves = 4;
+    float persistence = 0.5f;
+    int octaves = 6;
 
-    for(int i = 1; i <= octaves; i++) {
-        float freq = pow(2.0, float(i));
+    for(int i = 1; i <= octaves; i++)
+    {
+        float freq = pow(2.f, float(i));
         float amp = pow(persistence, float(i));
 
-        total += interpNoise2D(x * freq,
-                               y * freq) * amp;
+        total += interpNoise3D(x * freq, y * freq, z * freq) * amp;
     }
+
     return total;
 }
 
@@ -375,7 +405,6 @@ vec3 computeNormal(vec3 pos, vec3 lightPos) {
                           findClosestObject(pos + epsilon.xxy, lightPos) - findClosestObject(pos - epsilon.xxy, lightPos)));
 }
 
-vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
     // float lambert = dot(n, light) + 0.3;
     // switch(hitObj) {
     //     case CHEST:
@@ -390,24 +419,32 @@ vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
     //     break;
     // }
     // return vec3(0.5);
+vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
     if(hitObj == -1) {
-      return vec3(0.5f);
+      return vec3(1.f);
     }
     float intensity = dot(n, light);
+    vec3 intensityNoise = fbm(p.x / 10.f, p.y / 10.f, p.z / 10.f);
     float outline = dot(n, view);
-    if (outline < 0.3f && outline >= -0.3f) {
+    if (outline < 0.4f && outline >= -0.4f) {
       return vec3(0.f);
     }
     if (intensity > 0.8) {
+      return vec3(1.f);
+    } else if (intensity > 0.6 && intensityNoise.r < 0.5) {
       return vec3(0.8f);
-    } else if (intensity > 0.6) {
+    } else if (intensity > 0.6 && intensityNoise.r >= 0.5) {
       return vec3(0.6f);
-    } else if (intensity > 0.2) {
+    } else if (intensity > 0.2 && intensityNoise.g < 0.5) {
+      return vec3(0.6f);
+    } else if (intensity > 0.2 && intensityNoise.g > 0.5) {
       return vec3(0.4f);
-    } else if (intensity > 0.05) {
-      return vec3(0.3f);
+    } else if (intensity > 0.05 && intensityNoise.b < 0.5) {
+      return vec3(0.4f);
+    } else if (intensity > 0.05 && intensityNoise.b > 0.5) {
+      return vec3(0.f);
     } else {
-      return vec3(0.2f);
+      return vec3(0.f);
     }
 }
 
