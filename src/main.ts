@@ -1,4 +1,5 @@
 import {vec2, vec3} from 'gl-matrix';
+// const Stats = require('stats-js');
 // import * as Stats from 'stats-js';
 // import * as DAT from 'dat-gui';
 import Square from './geometry/Square';
@@ -45,7 +46,7 @@ function main() {
   // stats.domElement.style.top = '0px';
   // document.body.appendChild(stats.domElement);
 
-  // Add controls to the gui
+  // // Add controls to the gui
   // const gui = new DAT.GUI();
 
   // get canvas and webgl context

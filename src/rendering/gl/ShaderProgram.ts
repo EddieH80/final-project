@@ -34,6 +34,11 @@ class ShaderProgram {
   unifModelInvTra: WebGLUniformLocation;
   unifViewProj: WebGLUniformLocation;
 
+  unifFrontLeftLegAngle: WebGLUniformLocation;
+  unifFrontRightLegAngle: WebGLUniformLocation;
+  unifBackLeftLegAngle: WebGLUniformLocation;
+  unifBackRightLegAngle: WebGLUniformLocation;
+
   constructor(shaders: Array<Shader>) {
     this.prog = gl.createProgram();
 
@@ -57,6 +62,11 @@ class ShaderProgram {
     this.unifModel   = gl.getUniformLocation(this.prog, "u_Model");
     this.unifModelInvTra   = gl.getUniformLocation(this.prog, "u_ModelInvTra");
     this.unifViewProj   = gl.getUniformLocation(this.prog, "u_ViewProj");
+
+    this.unifFrontLeftLegAngle   = gl.getUniformLocation(this.prog, "u_FrontLeftLegAngle");
+    this.unifFrontRightLegAngle   = gl.getUniformLocation(this.prog, "u_FrontRightLegAngle");
+    this.unifBackLeftLegAngle   = gl.getUniformLocation(this.prog, "u_BackLeftLegAngle");
+    this.unifBackRightLegAngle   = gl.getUniformLocation(this.prog, "u_BackRightLegAngle");
   }
 
   use() {
@@ -111,6 +121,31 @@ class ShaderProgram {
     this.use();
     if (this.unifViewProj !== -1) {
       gl.uniformMatrix4fv(this.unifViewProj, false, vp);
+    }
+  }
+
+  setFrontLeftLegAngle(t: number) {
+    this.use();
+    if(this.unifTime !== -1) {
+      gl.uniform1f(this.unifFrontLeftLegAngle, t);
+    }
+  }
+  setFrontRightLegAngle(t: number) {
+    this.use();
+    if(this.unifTime !== -1) {
+      gl.uniform1f(this.unifFrontRightLegAngle, t);
+    }
+  }
+  setBackLeftLegAngle(t: number) {
+    this.use();
+    if(this.unifTime !== -1) {
+      gl.uniform1f(this.unifBackLeftLegAngle, t);
+    }
+  }
+  setBackRightLegAngle(t: number) {
+    this.use();
+    if(this.unifTime !== -1) {
+      gl.uniform1f(this.unifBackRightLegAngle, t);
     }
   }
 

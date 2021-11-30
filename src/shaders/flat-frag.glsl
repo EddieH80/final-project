@@ -21,33 +21,40 @@ const int RAY_STEPS = 256;
 #define HIND_SDF smoothBlend(TORSO_SDF, opDisplaceSin(sphere(pos + vec3(-7.0, 0.0, -9.0), 3.5), pos, vec3(0.3)), 0.5)
 
 // Legs
-#define FRONT_LEFT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(3.2, 8.0, 0.8), 7.5), 0.5, 1.2, 6.0)
+#define FRONT_LEFT_LEG_TOP_SDF smoothBlend(HIND_SDF, roundCone(rotateZ(pos + vec3(3.2, 8.0, 0.8), 7.5), 0.5, 1.2, 6.0), 0.5)
 #define FRONT_LEFT_LEG_KNEE_SDF smoothBlend(FRONT_LEFT_LEG_TOP_SDF, sphere(pos + vec3(3.4, 8.0, 0.8), 0.5), 0.5)
 #define FRONT_LEFT_LEG_SHIN_SDF smoothBlend(FRONT_LEFT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(3.5, 10.5, 0.8), 0.3, 0.1, 3.0), 0.5)
 #define FRONT_LEFT_LEG_SDF smoothBlend(FRONT_LEFT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(3.5, 13.0, 0.8), 0.4, 0.2, 0.5), 0.5)
 
-#define FRONT_RIGHT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(-3.2, 8.0, 0.2), -7.5), 0.5, 1.2, 6.0)
+#define FRONT_RIGHT_LEG_TOP_SDF smoothBlend(FRONT_LEFT_LEG_SDF, roundCone(rotateZ(pos + vec3(-3.2, 8.0, 0.2), -7.5), 0.5, 1.2, 6.0), 0.5)
 #define FRONT_RIGHT_LEG_KNEE_SDF smoothBlend(FRONT_RIGHT_LEG_TOP_SDF, sphere(pos + vec3(-3.4, 8.0, 0.2), 0.5), 0.5)
 #define FRONT_RIGHT_LEG_SHIN_SDF smoothBlend(FRONT_RIGHT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-3.5, 10.5, 0.2), 0.3, 0.1, 3.0), 0.5)
 #define FRONT_RIGHT_LEG_SDF smoothBlend(FRONT_RIGHT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-3.5, 13.0, 0.2), 0.4, 0.2, 0.5), 0.5)
 
-#define BACK_LEFT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(-9.2, 8.0, -10.0), -7.5), 0.5, 1.2, 6.0)
-#define BACK_LEFT_LEG_KNEE_SDF smoothBlend(BACK_RIGHT_LEG_TOP_SDF, sphere(pos + vec3(-9.2, 8.0, -10.0), 0.5), 0.5)
-#define BACK_LEFT_LEG_SHIN_SDF smoothBlend(BACK_RIGHT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-9.4, 10.5, -10.0), 0.3, 0.1, 3.0), 0.5)
-#define BACK_LEFT_LEG_SDF smoothBlend(BACK_RIGHT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-9.4, 13.0, -10.0), 0.4, 0.2, 0.5), 0.5)
+#define BACK_LEFT_LEG_TOP_SDF smoothBlend(FRONT_RIGHT_LEG_SDF, roundCone(rotateZ(pos + vec3(-9.2, 8.0, -10.0), -7.5), 0.5, 1.2, 6.0), 0.5)
+#define BACK_LEFT_LEG_KNEE_SDF smoothBlend(BACK_LEFT_LEG_TOP_SDF, sphere(pos + vec3(-9.2, 8.0, -10.0), 0.5), 0.5)
+#define BACK_LEFT_LEG_SHIN_SDF smoothBlend(BACK_LEFT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-9.4, 10.5, -10.0), 0.3, 0.1, 3.0), 0.5)
+#define BACK_LEFT_LEG_SDF smoothBlend(BACK_LEFT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-9.4, 13.0, -10.0), 0.4, 0.2, 0.5), 0.5)
 
-#define BACK_RIGHT_LEG_TOP_SDF roundCone(rotateZ(pos + vec3(-5.0, 8.0, -11.0), 7.5), 0.5, 1.2, 6.0)
-#define BACK_RIGHT_LEG_KNEE_SDF smoothBlend(BACK_LEFT_LEG_TOP_SDF, sphere(pos + vec3(-5.0, 8.0, -11.0), 0.5), 0.5)
-#define BACK_RIGHT_LEG_SHIN_SDF smoothBlend(BACK_LEFT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-5.2, 10.5, -11.0), 0.3, 0.1, 3.0), 0.5)
-#define BACK_RIGHT_LEG_SDF smoothBlend(BACK_LEFT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-5.2, 13.0, -11.0), 0.4, 0.2, 0.5), 0.5)
+#define BACK_RIGHT_LEG_TOP_SDF smoothBlend(BACK_LEFT_LEG_SDF, roundCone(rotateZ(pos + vec3(-5.0, 8.0, -11.0), 7.5), 0.5, 1.2, 6.0), 0.5)
+#define BACK_RIGHT_LEG_KNEE_SDF smoothBlend(BACK_RIGHT_LEG_TOP_SDF, sphere(pos + vec3(-5.0, 8.0, -11.0), 0.5), 0.5)
+#define BACK_RIGHT_LEG_SHIN_SDF smoothBlend(BACK_RIGHT_LEG_KNEE_SDF, roundedCylinder(pos + vec3(-5.2, 10.5, -11.0), 0.3, 0.1, 3.0), 0.5)
+#define BACK_RIGHT_LEG_SDF smoothBlend(BACK_RIGHT_LEG_SHIN_SDF, roundedCylinder(pos + vec3(-5.2, 13.0, -11.0), 0.4, 0.2, 0.5), 0.5)
 
 // Head
-#define LEFT_EAR_SDF smoothBlend(HIND_SDF, roundCone(pos + vec3(-1.2, -9.0, 6.5), 0.5, 0.2, 0.6), 0.5)
+#define LEFT_EAR_SDF smoothBlend(BACK_RIGHT_LEG_SDF, roundCone(pos + vec3(-1.2, -9.0, 6.5), 0.5, 0.2, 0.6), 0.5)
 #define RIGHT_EAR_SDF smoothBlend(LEFT_EAR_SDF, roundCone(pos + vec3(1.2, -9.0, 6.5), 0.5, 0.2, 0.6), 0.5)
 #define NECK_SDF smoothBlend(RIGHT_EAR_SDF, roundCone(rotateX(pos + vec3(0.0, 0.0, 1.0), 30.0), 2.2, 1.9, 8.0), 0.5)
 #define MOUTH_SDF smoothBlend(NECK_SDF, roundCone(rotateX(pos + vec3(0.0, -7.0, 6.0), 140.0), 2.2, 1.4, 3.8), 0.5)
 #define MOUTH_END_SDF smoothBlend(MOUTH_SDF, sphere(pos + vec3(0.0, -4.0, 8.5), 1.0), 0.5)
 #define HEAD_SDF smoothBlend(MOUTH_END_SDF, sphere(pos + vec3(0.0, -7.0, 6.0), 2.2), 0.5)
+
+// Hooves
+#define HOOVES_SDF smoothBlend(roundedCylinder(pos + vec3(3.5, 13.0, 0.8), 0.4, 0.2, 0.5), smoothBlend(roundedCylinder(pos + vec3(-3.5, 13.0, 0.2), 0.4, 0.2, 0.5), smoothBlend(roundedCylinder(pos + vec3(-9.4, 13.0, -10.0), 0.4, 0.2, 0.5), roundedCylinder(pos + vec3(-5.2, 13.0, -11.0), 0.4, 0.2, 0.5), 0.5), 0.5), 0.5)
+
+#define MANE_SDF opDisplaceSin(box(rotateX(pos + vec3(0, -6.5, 3.2), -50.0), vec3(0.2, 2.0, 4.0)), pos, vec3(0.9))
+#define TAIL_SDF opDisplaceSin(box(rotateX(rotateY(pos + vec3(-10.0, -2.5, -12.0), -35.0), 10.0), vec3(0.2, 2.0, 3.0)), pos, vec3(1.05))
+
 ////////// GEOMETRY ENDS //////////
 
 #define CHEST 0
@@ -58,6 +65,9 @@ const int RAY_STEPS = 256;
 #define BACK_LEFT_LEG 5
 #define BACK_RIGHT_LEG 6
 #define HEAD 7
+#define HOOVES 8
+#define MANE 9
+#define TAIL 10
 
 ////////// SDFS //////////
 float sphere(vec3 p, float s) {
@@ -320,13 +330,10 @@ bool isRayTooLong(vec3 queryPoint, vec3 origin) {
 
 float findClosestObject(vec3 pos, vec3 lightPos) {
     float t = CHEST_SDF;
-    t = min(t, TORSO_SDF);
-    t = min(t, HIND_SDF);
-    t = min(t, FRONT_LEFT_LEG_SDF);
-    t = min(t, FRONT_RIGHT_LEG_SDF);
-    t = min(t, BACK_LEFT_LEG_SDF);
-    t = min(t, BACK_RIGHT_LEG_SDF);
     t = min(t, HEAD_SDF);
+    t = min(t, HOOVES_SDF);
+    t = min(t, MANE_SDF);
+    t = min(t, TAIL_SDF);
     return t;
 }
 
@@ -337,47 +344,23 @@ void findClosestObject(vec3 pos, out float t, out int obj, vec3 lightPos) {
     float t2;
     float bounding_sphere_dist = sphere(pos, 50.0);
     if(bounding_sphere_dist <= 0.00001f) {
-      if((t2 = TORSO_SDF) < t) {
-          t = t2;
-          obj = TORSO;
-      }
-      if((t2 = HIND_SDF) < t) {
-          t = t2;
-          obj = HIND;
-      }
-      if((t2 = FRONT_LEFT_LEG_SDF) < t) {
-          t = t2;
-          obj = FRONT_LEFT_LEG;
-      }
-      if((t2 = FRONT_RIGHT_LEG_SDF) < t) {
-          t = t2;
-          obj = FRONT_RIGHT_LEG;
-      }
-      if((t2 = BACK_LEFT_LEG_SDF) < t) {
-          t = t2;
-          obj = BACK_LEFT_LEG;
-      }
-      if((t2 = BACK_RIGHT_LEG_SDF) < t) {
-          t = t2;
-          obj = BACK_RIGHT_LEG;
-      }
       if((t2 = HEAD_SDF) < t) {
           t = t2;
           obj = HEAD;
       }
+      if((t2 = HOOVES_SDF) < t) {
+          t = t2;
+          obj = HOOVES;
+      }
+      if((t2 = MANE_SDF) < t) {
+          t = t2;
+          obj = MANE;
+      }
+      if((t2 = TAIL_SDF) < t) {
+          t = t2;
+          obj = TAIL;
+      }
     }
-}
-
-float hardShadow(vec3 dir, vec3 origin, float min_t, vec3 lightPos) {
-    float t = min_t;
-    for(int i = 0; i < RAY_STEPS; i++) {
-        float m = findClosestObject(origin + t * dir, lightPos);
-        if(m < 0.0001) {
-            return 0.0;
-        }
-        t += m;
-    }
-    return 1.0;
 }
 
 void march(vec3 origin, vec3 dir, out float t, out int hitObj, vec3 lightPos) {
@@ -420,8 +403,11 @@ vec3 computeNormal(vec3 pos, vec3 lightPos) {
     // }
     // return vec3(0.5);
 vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
-    if(hitObj == -1) {
+    if(hitObj == -1 || hitObj == HOOVES) {
       return vec3(1.f);
+    }
+    if(hitObj == MANE || hitObj == TAIL) {
+      return vec3(0.f);
     }
     float intensity = dot(n, light);
     vec3 intensityNoise = fbm(p.x / 10.f, p.y / 10.f, p.z / 10.f);
@@ -435,13 +421,13 @@ vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
       return vec3(0.8f);
     } else if (intensity > 0.6 && intensityNoise.r >= 0.5) {
       return vec3(0.6f);
-    } else if (intensity > 0.2 && intensityNoise.g < 0.5) {
+    } else if (intensity > 0.2 && intensityNoise.r < 0.5) {
       return vec3(0.6f);
-    } else if (intensity > 0.2 && intensityNoise.g > 0.5) {
+    } else if (intensity > 0.2 && intensityNoise.r >= 0.5) {
       return vec3(0.4f);
-    } else if (intensity > 0.05 && intensityNoise.b < 0.5) {
+    } else if (intensity > 0.01 && intensityNoise.r < 0.5) {
       return vec3(0.4f);
-    } else if (intensity > 0.05 && intensityNoise.b > 0.5) {
+    } else if (intensity > 0.01 && intensityNoise.r >= 0.5) {
       return vec3(0.f);
     } else {
       return vec3(0.f);
@@ -469,9 +455,7 @@ Intersection getIntersection(vec3 dir, vec3 eye, vec3 lightPos) {
 void main() {
   Ray r = raycast(fs_Pos.xy);
   Intersection i = getIntersection(r.direction, r.origin, LIGHT_POS);
-  // vec3 color = 0.5 * (r.direction + vec3(1.0, 1.0, 1.0));
 
-  // out_Col = vec4(0.5 * (fs_Pos + vec2(1.0)), 0.5 * (sin(u_Time * 3.14159 * 0.01) + 1.0), 1.0);
   out_Col = vec4(i.color, 1.0);
 }
 
