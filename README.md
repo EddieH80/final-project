@@ -96,6 +96,11 @@ We'll check your repository for updates. No need to create a new pull request.
 
 Come to class on the due date with a WORKING COPY of your project. We'll be spending time in class critiquing and reviewing your work so far.
 
+Have implemented a basic toon shading effect mixed with some FBM noise to shade in the horse SDF model. Also added geometry for the mane and tail and also added a displacement function to distort the geometry a bit to create a more natural feel. Still need to improve the shader to make it look more ink like, and also need to add user input in order to generate variations of the same horse. Will prioritize adding features to generate variations of the horse model.
+
+![](Milestone3.1.png)
+![](Milestone3.2.png)
+
 ## Final submission (due 12/6)
 Time to polish! Spen this last week of your project using your generator to produce beautiful output. Add textures, tune parameters, play with colors, play with camera animation. Take the feedback from class critques and use it to take your project to the next level.
 
