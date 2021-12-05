@@ -46,6 +46,8 @@ class ShaderProgram {
   unifBackLeftLegAngle: WebGLUniformLocation;
   unifBackRightLegAngle: WebGLUniformLocation;
 
+  unifOutlineThickness: WebGLUniformLocation;
+
   constructor(shaders: Array<Shader>) {
     this.prog = gl.createProgram();
 
@@ -81,6 +83,8 @@ class ShaderProgram {
     this.unifFrontRightLegTopAngle   = gl.getUniformLocation(this.prog, "u_FrontRightLegTopAngle");
     this.unifBackLeftLegTopAngle   = gl.getUniformLocation(this.prog, "u_BackLeftLegTopAngle");
     this.unifBackRightLegTopAngle   = gl.getUniformLocation(this.prog, "u_BackRightLegTopAngle");
+
+    this.unifOutlineThickness   = gl.getUniformLocation(this.prog, "u_OutlineThickness");
   }
 
   use() {
@@ -192,6 +196,13 @@ class ShaderProgram {
     this.use();
     if(this.unifTime !== -1) {
       gl.uniform1f(this.unifBackRightLegAngle, t);
+    }
+  }
+
+  setOutlineThickness(t: number) {
+    this.use();
+    if(this.unifTime !== -1) {
+      gl.uniform1f(this.unifOutlineThickness, t);
     }
   }
 

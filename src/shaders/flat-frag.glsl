@@ -17,6 +17,8 @@ uniform float u_FrontRightLegAngle;
 uniform float u_BackLeftLegAngle;
 uniform float u_BackRightLegAngle;
 
+uniform float u_OutlineThickness;
+
 in vec4 fs_Pos;
 in vec4 fs_Nor;
 out vec4 out_Col;
@@ -426,7 +428,7 @@ vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
     float intensity = dot(n, light);
     vec3 intensityNoise = fbm(p.x / 10.f, p.y / 10.f, p.z / 10.f);
     float outline = dot(n, view);
-    if (outline < 0.4f && outline >= -0.4f) {
+    if (outline < u_OutlineThickness && outline >= -1.f * u_OutlineThickness) {
       return vec3(0.f);
     }
     if (intensity > 0.8) {

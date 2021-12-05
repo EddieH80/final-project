@@ -10,6 +10,8 @@ import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 // Define an object with application parameters and button callbacks
 // This will be referred to by dat.GUI's functions that add GUI elements.
 const controls = {
+  'Random Horse': randomHorse,
+  'Random Pose': randomPose,
   TorsoAngle: 0,
   FrontLeftLegTopAngle: 0,
   FrontRightLegTopAngle: 0,
@@ -19,6 +21,7 @@ const controls = {
   FrontRightLegAngle: 0,
   BackLeftLegAngle: 0,
   BackRightLegAngle: 0,
+  OutlineThickness: 0,
 };
 
 let square: Square;
@@ -35,6 +38,38 @@ let prevFrontLeftLegAngle: number = 0;
 let prevFrontRightLegAngle: number = 0;
 let prevBackLeftLegAngle: number = 0;
 let prevBackRightLegAngle: number = 0;
+
+let prevOutlineThickness: number = 0;
+
+function randomHorse() {
+  controls.TorsoAngle = Math.random() * 90.0 - 45.0;
+
+  controls.FrontLeftLegTopAngle = Math.random() * 70.0 - 35.0;
+  controls.FrontRightLegTopAngle = Math.random() * 70.0 - 35.0;
+  controls.BackLeftLegTopAngle = Math.random() * 70.0 - 35.0;
+  controls.BackRightLegTopAngle = Math.random() * 70.0 - 35.0;
+
+  controls.FrontLeftLegAngle = Math.random() * 120.0;
+  controls.FrontRightLegAngle = Math.random() * 120.0;
+  controls.BackLeftLegAngle = Math.random() * 120.0;
+  controls.BackRightLegAngle = Math.random() * 120.0;
+
+  controls.OutlineThickness = Math.random() * 0.6;
+}
+
+function randomPose() {
+  controls.TorsoAngle = Math.random() * 90.0 - 45.0;
+
+  controls.FrontLeftLegTopAngle = Math.random() * 70.0 - 35.0;
+  controls.FrontRightLegTopAngle = Math.random() * 70.0 - 35.0;
+  controls.BackLeftLegTopAngle = Math.random() * 70.0 - 35.0;
+  controls.BackRightLegTopAngle = Math.random() * 70.0 - 35.0;
+
+  controls.FrontLeftLegAngle = Math.random() * 120.0;
+  controls.FrontRightLegAngle = Math.random() * 120.0;
+  controls.BackLeftLegAngle = Math.random() * 120.0;
+  controls.BackRightLegAngle = Math.random() * 120.0;
+}
 
 function loadScene() {
   square = new Square(vec3.fromValues(0, 0, 0));
@@ -66,15 +101,18 @@ function main() {
 
   // // Add controls to the gui
   const gui = new DAT.GUI();
+  gui.add(controls, 'Random Horse');
+  gui.add(controls, 'Random Pose');
   gui.add(controls, 'TorsoAngle', -45, 45).step(1);
   gui.add(controls, 'FrontLeftLegTopAngle', -35, 35).step(1);
-  gui.add(controls, 'FrontRightLegTopAngle', -35, 35).step(1);
-  gui.add(controls, 'BackLeftLegTopAngle', -35, 35).step(1);
-  gui.add(controls, 'BackRightLegTopAngle', -35, 35).step(1);
   gui.add(controls, 'FrontLeftLegAngle', 0, 120).step(1);
+  gui.add(controls, 'FrontRightLegTopAngle', -35, 35).step(1);
   gui.add(controls, 'FrontRightLegAngle', 0, 120).step(1);
+  gui.add(controls, 'BackLeftLegTopAngle', -35, 35).step(1);
   gui.add(controls, 'BackLeftLegAngle', 0, 120).step(1);
+  gui.add(controls, 'BackRightLegTopAngle', -35, 35).step(1);
   gui.add(controls, 'BackRightLegAngle', 0, 120).step(1);
+  gui.add(controls, 'OutlineThickness', 0, 0.6).step(0.1);
 
   // get canvas and webgl context
   const canvas = <HTMLCanvasElement> document.getElementById('canvas');
@@ -157,6 +195,12 @@ function main() {
     {
       prevBackRightLegAngle = controls.BackRightLegAngle;
       flat.setBackRightLegAngle(controls.BackRightLegAngle);
+    }
+
+    if(controls.OutlineThickness != prevOutlineThickness)
+    {
+      prevOutlineThickness = controls.OutlineThickness;
+      flat.setOutlineThickness(controls.OutlineThickness);
     }
     processKeyPresses();
     renderer.render(camera, flat, [
