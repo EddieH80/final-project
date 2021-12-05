@@ -34,6 +34,13 @@ class ShaderProgram {
   unifModelInvTra: WebGLUniformLocation;
   unifViewProj: WebGLUniformLocation;
 
+  unifTorsoAngle: WebGLUniformLocation;
+
+  unifFrontLeftLegTopAngle: WebGLUniformLocation;
+  unifFrontRightLegTopAngle: WebGLUniformLocation;
+  unifBackLeftLegTopAngle: WebGLUniformLocation;
+  unifBackRightLegTopAngle: WebGLUniformLocation;
+
   unifFrontLeftLegAngle: WebGLUniformLocation;
   unifFrontRightLegAngle: WebGLUniformLocation;
   unifBackLeftLegAngle: WebGLUniformLocation;
@@ -63,10 +70,17 @@ class ShaderProgram {
     this.unifModelInvTra   = gl.getUniformLocation(this.prog, "u_ModelInvTra");
     this.unifViewProj   = gl.getUniformLocation(this.prog, "u_ViewProj");
 
+    this.unifTorsoAngle   = gl.getUniformLocation(this.prog, "u_TorsoAngle");
+
     this.unifFrontLeftLegAngle   = gl.getUniformLocation(this.prog, "u_FrontLeftLegAngle");
     this.unifFrontRightLegAngle   = gl.getUniformLocation(this.prog, "u_FrontRightLegAngle");
     this.unifBackLeftLegAngle   = gl.getUniformLocation(this.prog, "u_BackLeftLegAngle");
     this.unifBackRightLegAngle   = gl.getUniformLocation(this.prog, "u_BackRightLegAngle");
+
+    this.unifFrontLeftLegTopAngle   = gl.getUniformLocation(this.prog, "u_FrontLeftLegTopAngle");
+    this.unifFrontRightLegTopAngle   = gl.getUniformLocation(this.prog, "u_FrontRightLegTopAngle");
+    this.unifBackLeftLegTopAngle   = gl.getUniformLocation(this.prog, "u_BackLeftLegTopAngle");
+    this.unifBackRightLegTopAngle   = gl.getUniformLocation(this.prog, "u_BackRightLegTopAngle");
   }
 
   use() {
@@ -121,6 +135,38 @@ class ShaderProgram {
     this.use();
     if (this.unifViewProj !== -1) {
       gl.uniformMatrix4fv(this.unifViewProj, false, vp);
+    }
+  }
+
+  setTorsoAngle(t: number) {
+    this.use();
+    if(this.unifTime !== -1) {
+      gl.uniform1f(this.unifTorsoAngle, t);
+    }
+  }
+
+  setFrontLeftLegTopAngle(t: number) {
+    this.use();
+    if(this.unifTime !== -1) {
+      gl.uniform1f(this.unifFrontLeftLegTopAngle, t);
+    }
+  }
+  setFrontRightLegTopAngle(t: number) {
+    this.use();
+    if(this.unifTime !== -1) {
+      gl.uniform1f(this.unifFrontRightLegTopAngle, t);
+    }
+  }
+  setBackLeftLegTopAngle(t: number) {
+    this.use();
+    if(this.unifTime !== -1) {
+      gl.uniform1f(this.unifBackLeftLegTopAngle, t);
+    }
+  }
+  setBackRightLegTopAngle(t: number) {
+    this.use();
+    if(this.unifTime !== -1) {
+      gl.uniform1f(this.unifBackRightLegTopAngle, t);
     }
   }
 

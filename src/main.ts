@@ -10,7 +10,11 @@ import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 // Define an object with application parameters and button callbacks
 // This will be referred to by dat.GUI's functions that add GUI elements.
 const controls = {
-  tesselations: 5,
+  TorsoAngle: 0,
+  FrontLeftLegTopAngle: 0,
+  FrontRightLegTopAngle: 0,
+  BackLeftLegTopAngle: 0,
+  BackRightLegTopAngle: 0,
   FrontLeftLegAngle: 0,
   FrontRightLegAngle: 0,
   BackLeftLegAngle: 0,
@@ -19,6 +23,14 @@ const controls = {
 
 let square: Square;
 let time: number = 0;
+
+let prevTorsoAngle: number = 0;
+
+let prevFrontLeftLegTopAngle: number = 0;
+let prevFrontRightLegTopAngle: number = 0;
+let prevBackLeftLegTopAngle: number = 0;
+let prevBackRightLegTopAngle: number = 0;
+
 let prevFrontLeftLegAngle: number = 0;
 let prevFrontRightLegAngle: number = 0;
 let prevBackLeftLegAngle: number = 0;
@@ -54,6 +66,11 @@ function main() {
 
   // // Add controls to the gui
   const gui = new DAT.GUI();
+  gui.add(controls, 'TorsoAngle', -45, 45).step(1);
+  gui.add(controls, 'FrontLeftLegTopAngle', -35, 35).step(1);
+  gui.add(controls, 'FrontRightLegTopAngle', -35, 35).step(1);
+  gui.add(controls, 'BackLeftLegTopAngle', -35, 35).step(1);
+  gui.add(controls, 'BackRightLegTopAngle', -35, 35).step(1);
   gui.add(controls, 'FrontLeftLegAngle', 0, 120).step(1);
   gui.add(controls, 'FrontRightLegAngle', 0, 120).step(1);
   gui.add(controls, 'BackLeftLegAngle', 0, 120).step(1);
@@ -93,6 +110,33 @@ function main() {
     stats.begin();
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.clear();
+
+    if(controls.TorsoAngle != prevTorsoAngle)
+    {
+      prevTorsoAngle = controls.TorsoAngle;
+      flat.setTorsoAngle(controls.TorsoAngle);
+    }
+
+    if(controls.FrontLeftLegTopAngle != prevFrontLeftLegTopAngle)
+    {
+      prevFrontLeftLegTopAngle = controls.FrontLeftLegTopAngle;
+      flat.setFrontLeftLegTopAngle(controls.FrontLeftLegTopAngle);
+    }
+    if(controls.FrontRightLegTopAngle != prevFrontRightLegTopAngle)
+    {
+      prevFrontRightLegTopAngle = controls.FrontRightLegTopAngle;
+      flat.setFrontRightLegTopAngle(controls.FrontRightLegTopAngle);
+    }
+    if(controls.BackLeftLegTopAngle != prevBackLeftLegTopAngle)
+    {
+      prevBackLeftLegTopAngle = controls.BackLeftLegTopAngle;
+      flat.setBackLeftLegTopAngle(controls.BackLeftLegTopAngle);
+    }
+    if(controls.BackRightLegTopAngle != prevBackRightLegTopAngle)
+    {
+      prevBackRightLegTopAngle = controls.BackRightLegTopAngle;
+      flat.setBackRightLegTopAngle(controls.BackRightLegTopAngle);
+    }
 
     if(controls.FrontLeftLegAngle != prevFrontLeftLegAngle)
     {
