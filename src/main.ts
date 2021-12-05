@@ -11,11 +11,18 @@ import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 // This will be referred to by dat.GUI's functions that add GUI elements.
 const controls = {
   tesselations: 5,
-  'Load Scene': loadScene, // A function pointer, essentially
+  FrontLeftLegAngle: 0,
+  FrontRightLegAngle: 0,
+  BackLeftLegAngle: 0,
+  BackRightLegAngle: 0,
 };
 
 let square: Square;
 let time: number = 0;
+let prevFrontLeftLegAngle: number = 0;
+let prevFrontRightLegAngle: number = 0;
+let prevBackLeftLegAngle: number = 0;
+let prevBackRightLegAngle: number = 0;
 
 function loadScene() {
   square = new Square(vec3.fromValues(0, 0, 0));
@@ -47,6 +54,10 @@ function main() {
 
   // // Add controls to the gui
   const gui = new DAT.GUI();
+  gui.add(controls, 'FrontLeftLegAngle', 0, 120).step(1);
+  gui.add(controls, 'FrontRightLegAngle', 0, 120).step(1);
+  gui.add(controls, 'BackLeftLegAngle', 0, 120).step(1);
+  gui.add(controls, 'BackRightLegAngle', 0, 120).step(1);
 
   // get canvas and webgl context
   const canvas = <HTMLCanvasElement> document.getElementById('canvas');
@@ -79,15 +90,36 @@ function main() {
   // This function will be called every frame
   function tick() {
     camera.update();
-    // stats.begin();
+    stats.begin();
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.clear();
+
+    if(controls.FrontLeftLegAngle != prevFrontLeftLegAngle)
+    {
+      prevFrontLeftLegAngle = controls.FrontLeftLegAngle;
+      flat.setFrontLeftLegAngle(controls.FrontLeftLegAngle);
+    }
+    if(controls.FrontRightLegAngle != prevFrontRightLegAngle)
+    {
+      prevFrontRightLegAngle = controls.FrontRightLegAngle;
+      flat.setFrontRightLegAngle(controls.FrontRightLegAngle);
+    }
+    if(controls.BackLeftLegAngle != prevBackLeftLegAngle)
+    {
+      prevBackLeftLegAngle = controls.BackLeftLegAngle;
+      flat.setBackLeftLegAngle(controls.BackLeftLegAngle);
+    }
+    if(controls.BackRightLegAngle != prevBackRightLegAngle)
+    {
+      prevBackRightLegAngle = controls.BackRightLegAngle;
+      flat.setBackRightLegAngle(controls.BackRightLegAngle);
+    }
     processKeyPresses();
     renderer.render(camera, flat, [
       square,
     ], time);
     time++;
-    // stats.end();
+    stats.end();
 
     // Tell the browser to call `tick` again whenever it renders a new frame
     requestAnimationFrame(tick);
