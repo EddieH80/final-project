@@ -12,6 +12,9 @@ import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 const controls = {
   'Random Horse': randomHorse,
   'Random Pose': randomPose,
+  HeadLRAngle: 0,
+  HeadUDAngle: 0,
+  NeckAngle: 0,
   TorsoAngle: 0,
   FrontLeftLegTopAngle: 0,
   FrontRightLegTopAngle: 0,
@@ -27,6 +30,9 @@ const controls = {
 let square: Square;
 let time: number = 0;
 
+let prevHeadLRAngle: number = 0;
+let prevHeadUDAngle: number = 0;
+let prevNeckAngle: number = 0;
 let prevTorsoAngle: number = 0;
 
 let prevFrontLeftLegTopAngle: number = 0;
@@ -42,6 +48,9 @@ let prevBackRightLegAngle: number = 0;
 let prevOutlineThickness: number = 0;
 
 function randomHorse() {
+  controls.HeadLRAngle = Math.random() * 90.0 - 45.0;
+  controls.HeadUDAngle = Math.random() * 90.0 - 45.0;
+  controls.NeckAngle = Math.random() * 80.0;
   controls.TorsoAngle = Math.random() * 90.0 - 45.0;
 
   controls.FrontLeftLegTopAngle = Math.random() * 70.0 - 35.0;
@@ -58,6 +67,9 @@ function randomHorse() {
 }
 
 function randomPose() {
+  controls.HeadLRAngle = Math.random() * 90.0 - 45.0;
+  controls.HeadUDAngle = Math.random() * 90.0 - 45.0;
+  controls.NeckAngle = Math.random() * 80.0;
   controls.TorsoAngle = Math.random() * 90.0 - 45.0;
 
   controls.FrontLeftLegTopAngle = Math.random() * 70.0 - 35.0;
@@ -103,6 +115,9 @@ function main() {
   const gui = new DAT.GUI();
   gui.add(controls, 'Random Horse');
   gui.add(controls, 'Random Pose');
+  gui.add(controls, 'HeadLRAngle', -45, 45).step(1);
+  gui.add(controls, 'HeadUDAngle', -45, 45).step(1);
+  gui.add(controls, 'NeckAngle', 0, 80).step(1);
   gui.add(controls, 'TorsoAngle', -45, 45).step(1);
   gui.add(controls, 'FrontLeftLegTopAngle', -35, 35).step(1);
   gui.add(controls, 'FrontLeftLegAngle', 0, 120).step(1);
@@ -149,6 +164,21 @@ function main() {
     gl.viewport(0, 0, window.innerWidth, window.innerHeight);
     renderer.clear();
 
+    if(controls.HeadLRAngle != prevHeadLRAngle)
+    {
+      prevHeadLRAngle = controls.HeadLRAngle;
+      flat.setHeadLRAngle(controls.HeadLRAngle);
+    }
+    if(controls.HeadUDAngle != prevHeadUDAngle)
+    {
+      prevHeadUDAngle = controls.HeadUDAngle;
+      flat.setHeadUDAngle(controls.HeadUDAngle);
+    }
+    if(controls.NeckAngle != prevNeckAngle)
+    {
+      prevNeckAngle = controls.NeckAngle;
+      flat.setNeckAngle(controls.NeckAngle);
+    }
     if(controls.TorsoAngle != prevTorsoAngle)
     {
       prevTorsoAngle = controls.TorsoAngle;

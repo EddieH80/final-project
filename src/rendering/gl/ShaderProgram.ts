@@ -34,6 +34,9 @@ class ShaderProgram {
   unifModelInvTra: WebGLUniformLocation;
   unifViewProj: WebGLUniformLocation;
 
+  unifHeadLRAngle: WebGLUniformLocation;
+  unifHeadUDAngle: WebGLUniformLocation;
+  unifNeckAngle: WebGLUniformLocation;
   unifTorsoAngle: WebGLUniformLocation;
 
   unifFrontLeftLegTopAngle: WebGLUniformLocation;
@@ -72,6 +75,9 @@ class ShaderProgram {
     this.unifModelInvTra   = gl.getUniformLocation(this.prog, "u_ModelInvTra");
     this.unifViewProj   = gl.getUniformLocation(this.prog, "u_ViewProj");
 
+    this.unifHeadLRAngle   = gl.getUniformLocation(this.prog, "u_HeadLRAngle");
+    this.unifHeadUDAngle   = gl.getUniformLocation(this.prog, "u_HeadUDAngle");
+    this.unifNeckAngle   = gl.getUniformLocation(this.prog, "u_NeckAngle");
     this.unifTorsoAngle   = gl.getUniformLocation(this.prog, "u_TorsoAngle");
 
     this.unifFrontLeftLegAngle   = gl.getUniformLocation(this.prog, "u_FrontLeftLegAngle");
@@ -142,66 +148,87 @@ class ShaderProgram {
     }
   }
 
+  setHeadLRAngle(t: number) {
+    this.use();
+    if(this.unifHeadLRAngle !== -1) {
+      gl.uniform1f(this.unifHeadLRAngle, t);
+    }
+  }
+
+  setHeadUDAngle(t: number) {
+    this.use();
+    if(this.unifHeadUDAngle !== -1) {
+      gl.uniform1f(this.unifHeadUDAngle, t);
+    }
+  }
+
+  setNeckAngle(t: number) {
+    this.use();
+    if(this.unifNeckAngle !== -1) {
+      gl.uniform1f(this.unifNeckAngle, t);
+    }
+  }
+
   setTorsoAngle(t: number) {
     this.use();
-    if(this.unifTime !== -1) {
+    if(this.unifTorsoAngle !== -1) {
       gl.uniform1f(this.unifTorsoAngle, t);
     }
   }
 
   setFrontLeftLegTopAngle(t: number) {
     this.use();
-    if(this.unifTime !== -1) {
+    if(this.unifFrontLeftLegTopAngle !== -1) {
       gl.uniform1f(this.unifFrontLeftLegTopAngle, t);
     }
   }
   setFrontRightLegTopAngle(t: number) {
     this.use();
-    if(this.unifTime !== -1) {
+    if(this.unifFrontRightLegTopAngle !== -1) {
       gl.uniform1f(this.unifFrontRightLegTopAngle, t);
     }
   }
   setBackLeftLegTopAngle(t: number) {
     this.use();
-    if(this.unifTime !== -1) {
+    if(this.unifBackLeftLegTopAngle !== -1) {
       gl.uniform1f(this.unifBackLeftLegTopAngle, t);
     }
   }
   setBackRightLegTopAngle(t: number) {
     this.use();
-    if(this.unifTime !== -1) {
+    if(this.unifBackRightLegTopAngle !== -1) {
       gl.uniform1f(this.unifBackRightLegTopAngle, t);
     }
   }
 
   setFrontLeftLegAngle(t: number) {
     this.use();
-    if(this.unifTime !== -1) {
+    if(this.unifFrontLeftLegAngle !== -1) {
       gl.uniform1f(this.unifFrontLeftLegAngle, t);
     }
   }
   setFrontRightLegAngle(t: number) {
     this.use();
-    if(this.unifTime !== -1) {
+    if(this.unifFrontRightLegAngle !== -1) {
       gl.uniform1f(this.unifFrontRightLegAngle, t);
     }
   }
   setBackLeftLegAngle(t: number) {
     this.use();
-    if(this.unifTime !== -1) {
+    if(this.unifBackLeftLegAngle !== -1) {
       gl.uniform1f(this.unifBackLeftLegAngle, t);
     }
   }
   setBackRightLegAngle(t: number) {
     this.use();
-    if(this.unifTime !== -1) {
+    if(this.unifBackRightLegAngle !== -1) {
       gl.uniform1f(this.unifBackRightLegAngle, t);
     }
   }
 
   setOutlineThickness(t: number) {
     this.use();
-    if(this.unifTime !== -1) {
+    if(this.unifOutlineThickness !== -1) {
       gl.uniform1f(this.unifOutlineThickness, t);
     }
   }

@@ -5,6 +5,9 @@ uniform vec3 u_Eye, u_Ref, u_Up;
 uniform vec2 u_Dimensions;
 uniform float u_Time;
 
+uniform float u_HeadLRAngle;
+uniform float u_HeadUDAngle;
+uniform float u_NeckAngle;
 uniform float u_TorsoAngle;
 
 uniform float u_FrontLeftLegTopAngle;
@@ -58,17 +61,17 @@ const int RAY_STEPS = 256;
 #define BACK_RIGHT_LEG_SDF smoothBlend(BACK_RIGHT_LEG_KNEE_SDF, BACK_RIGHT_LEG_BOT_SDF, 0.5)
 
 // Head
-#define LEFT_EAR_SDF smoothBlend(BACK_RIGHT_LEG_SDF, roundCone(pos + vec3(-1.2, -9.0, 6.5), 0.5, 0.2, 0.6), 0.5)
-#define RIGHT_EAR_SDF smoothBlend(LEFT_EAR_SDF, roundCone(pos + vec3(1.2, -9.0, 6.5), 0.5, 0.2, 0.6), 0.5)
-#define NECK_SDF smoothBlend(RIGHT_EAR_SDF, roundCone(rotateX(pos + vec3(0.0, 0.0, 1.0), 30.0), 2.2, 1.9, 8.0), 0.5)
-#define MOUTH_SDF smoothBlend(NECK_SDF, roundCone(rotateX(pos + vec3(0.0, -7.0, 6.0), 140.0), 2.2, 1.4, 3.8), 0.5)
-#define MOUTH_END_SDF smoothBlend(MOUTH_SDF, sphere(pos + vec3(0.0, -4.0, 8.5), 1.0), 0.5)
-#define HEAD_SDF smoothBlend(MOUTH_END_SDF, sphere(pos + vec3(0.0, -7.0, 6.0), 2.2), 0.5)
+#define NECK_SDF smoothBlend(BACK_RIGHT_LEG_SDF, roundCone(rotateX(pos + vec3(0.0, 0.0, 1.0), u_NeckAngle), 2.2, 1.9, 8.0), 0.5)
+#define HEAD_SDF smoothBlend(NECK_SDF, sphere(rotateX(pos + vec3(0.0, 0.0, 1.0), u_NeckAngle) + vec3(0.0, -9.5, 0.0), 2.2), 0.5)
+#define LEFT_EAR_SDF smoothBlend(HEAD_SDF, roundCone(rotateX(rotateY(rotateX(pos + vec3(0.0, 0.0, 1.0), u_NeckAngle), u_HeadLRAngle) + vec3(-1.2, -11.5, 0.0), u_HeadUDAngle), 0.5, 0.2, 0.6), 0.5)
+#define RIGHT_EAR_SDF smoothBlend(LEFT_EAR_SDF, roundCone(rotateX(rotateY(rotateX(pos + vec3(0.0, 0.0, 1.0), u_NeckAngle), u_HeadLRAngle) + vec3(1.2, -11.5, 0.0), u_HeadUDAngle), 0.5, 0.2, 0.6), 0.5)
+#define MOUTH_SDF smoothBlend(RIGHT_EAR_SDF, roundCone(rotateX(rotateY(rotateX(pos + vec3(0.0, 0.0, 1.0), u_NeckAngle) + vec3(0.0, -9.5, 1.0), u_HeadLRAngle), 90.0 + u_HeadUDAngle), 2.2, 1.4, 3.8), 0.5)
+#define MOUTH_END_SDF smoothBlend(MOUTH_SDF, sphere(rotateX(rotateY(rotateX(pos + vec3(0.0, 0.0, 1.0), u_NeckAngle), u_HeadLRAngle) + vec3(0.0, -9.5, 0.0), u_HeadUDAngle), 1.0), 0.5)
 
 // Hooves
 //#define HOOVES_SDF smoothBlend(roundedCylinder(pos + vec3(3.5, 13.0, 0.8), 0.4, 0.2, 0.5), smoothBlend(roundedCylinder(pos + vec3(-3.5, 13.0, 0.2), 0.4, 0.2, 0.5), smoothBlend(roundedCylinder(pos + vec3(-9.4, 13.0, -10.0), 0.4, 0.2, 0.5), roundedCylinder(pos + vec3(-5.2, 13.0, -11.0), 0.4, 0.2, 0.5), 0.5), 0.5), 0.5)
 
-#define MANE_SDF opDisplaceSin(box(rotateX(pos + vec3(0, -6.5, 3.2), -50.0), vec3(0.2, 2.0, 4.0)), pos, vec3(0.9))
+#define MANE_SDF opDisplaceSin(box(rotateX(pos, u_NeckAngle) + vec3(0, -7.5, -1.0), vec3(0.2, 4.0, 2.0)), pos, vec3(0.9))
 #define TAIL_SDF opDisplaceSin(box(rotateX(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, -2.0, -17.0), 10.0), vec3(0.2, 2.0, 3.0)), pos, vec3(1.05))
 
 ////////// GEOMETRY ENDS //////////
@@ -80,7 +83,7 @@ const int RAY_STEPS = 256;
 #define FRONT_RIGHT_LEG 4
 #define BACK_LEFT_LEG 5
 #define BACK_RIGHT_LEG 6
-#define HEAD 7
+#define MOUTH_END 7
 //#define HOOVES 8
 #define MANE 9
 #define TAIL 10
@@ -346,7 +349,7 @@ bool isRayTooLong(vec3 queryPoint, vec3 origin) {
 
 float findClosestObject(vec3 pos, vec3 lightPos) {
     float t = CHEST_SDF;
-    t = min(t, HEAD_SDF);
+    t = min(t, MOUTH_END_SDF);
     //t = min(t, HOOVES_SDF);
     t = min(t, MANE_SDF);
     t = min(t, TAIL_SDF);
@@ -360,9 +363,9 @@ void findClosestObject(vec3 pos, out float t, out int obj, vec3 lightPos) {
     float t2;
     float bounding_sphere_dist = sphere(pos, 50.0);
     if(bounding_sphere_dist <= 0.00001f) {
-      if((t2 = HEAD_SDF) < t) {
+      if((t2 = MOUTH_END_SDF) < t) {
           t = t2;
-          obj = HEAD;
+          obj = MOUTH_END;
       }
       // if((t2 = HOOVES_SDF) < t) {
       //     t = t2;
