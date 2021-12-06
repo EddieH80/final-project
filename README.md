@@ -103,7 +103,7 @@ Resulting Images:
 
 ![](Horse5.png)
 
-###Post Mortem:
+### Post Mortem
 
 Overall I would say I am fairly happy with how my project turned out, although it ended up being quite different then what I wanted to do with it going into things. I think this is mainly because I was still a bit vague of what I wanted to accomplish with my project because I wasn't sure how to implement all of the 
 ideas I wanted to do. The main thing that changed was that I was initially planning to make a shader that replicated the elements of a Chinese ink painting, but
