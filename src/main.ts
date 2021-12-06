@@ -12,18 +12,20 @@ import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 const controls = {
   'Random Horse': randomHorse,
   'Random Pose': randomPose,
+  'Random Light': randomLight,
   HeadLRAngle: 0,
   HeadUDAngle: 0,
-  NeckAngle: 0,
+  NeckAngle: 30.0,
   TorsoAngle: 0,
-  FrontLeftLegTopAngle: 0,
-  FrontRightLegTopAngle: 0,
-  BackLeftLegTopAngle: 0,
-  BackRightLegTopAngle: 0,
-  FrontLeftLegAngle: 0,
-  FrontRightLegAngle: 0,
-  BackLeftLegAngle: 0,
-  BackRightLegAngle: 0,
+  FLTopLegAngle: 0,
+  FLBotLegAngle: 0,
+  FRTopLegAngle: 0,
+  FRBotLegAngle: 0,
+  BLTopLegAngle: 0,
+  BLBotLegAngle: 0,
+  BRTopLegAngle: 0,
+  BRBotLegAngle: 0,
+  BackgroundColor: 0.5,
   Shade1: 1.0,
   Shade2: 0.8,
   Shade3: 0.6,
@@ -33,6 +35,8 @@ const controls = {
   LightYPos: 40.0,
   LightZPos: -12.0,
   OutlineThickness: 0.4,
+  NoiseIntensity: 10.0,
+  NoiseOctaves: 4.0,
 };
 
 let square: Square;
@@ -43,15 +47,17 @@ let prevHeadUDAngle: number = 0;
 let prevNeckAngle: number = 0;
 let prevTorsoAngle: number = 0;
 
-let prevFrontLeftLegTopAngle: number = 0;
-let prevFrontRightLegTopAngle: number = 0;
-let prevBackLeftLegTopAngle: number = 0;
-let prevBackRightLegTopAngle: number = 0;
+let prevFLTopLegAngle: number = 0;
+let prevFRTopLegAngle: number = 0;
+let prevBLTopLegAngle: number = 0;
+let prevBRTopLegAngle: number = 0;
 
-let prevFrontLeftLegAngle: number = 0;
-let prevFrontRightLegAngle: number = 0;
-let prevBackLeftLegAngle: number = 0;
-let prevBackRightLegAngle: number = 0;
+let prevFLBotLegAngle: number = 0;
+let prevFRBotLegAngle: number = 0;
+let prevBLBotLegAngle: number = 0;
+let prevBRBotLegAngle: number = 0;
+
+let prevBackgroundColor: number = 0;
 
 let prevShade1: number = 0;
 let prevShade2: number = 0;
@@ -64,6 +70,8 @@ let prevLightYPos: number = 0;
 let prevLightZPos: number = 0;
 
 let prevOutlineThickness: number = 0;
+let prevNoiseIntensity: number = 0;
+let prevNoiseOctaves: number = 0;
 
 function randomHorse() {
   controls.HeadLRAngle = Math.random() * 90.0 - 45.0;
@@ -71,15 +79,15 @@ function randomHorse() {
   controls.NeckAngle = Math.random() * 80.0;
   controls.TorsoAngle = Math.random() * 90.0 - 45.0;
 
-  controls.FrontLeftLegTopAngle = Math.random() * 70.0 - 35.0;
-  controls.FrontRightLegTopAngle = Math.random() * 70.0 - 35.0;
-  controls.BackLeftLegTopAngle = Math.random() * 70.0 - 35.0;
-  controls.BackRightLegTopAngle = Math.random() * 70.0 - 35.0;
+  controls.FLTopLegAngle = Math.random() * 70.0 - 35.0;
+  controls.FRTopLegAngle = Math.random() * 70.0 - 35.0;
+  controls.BLTopLegAngle = Math.random() * 70.0 - 35.0;
+  controls.BRTopLegAngle = Math.random() * 70.0 - 35.0;
 
-  controls.FrontLeftLegAngle = Math.random() * 120.0;
-  controls.FrontRightLegAngle = Math.random() * 120.0;
-  controls.BackLeftLegAngle = Math.random() * 120.0;
-  controls.BackRightLegAngle = Math.random() * 120.0;
+  controls.FLBotLegAngle = Math.random() * 120.0;
+  controls.FRBotLegAngle = Math.random() * 120.0;
+  controls.BLBotLegAngle = Math.random() * 120.0;
+  controls.BRBotLegAngle = Math.random() * 120.0;
 
   controls.Shade1 = Math.random();
   controls.Shade2 = Math.random();
@@ -88,6 +96,8 @@ function randomHorse() {
   controls.Shade5 = Math.random();
 
   controls.OutlineThickness = Math.random() * 0.6;
+  controls.NoiseIntensity = Math.random() * 15.0 + 5.0;
+  controls.NoiseOctaves = Math.random() * 5.0 + 3.0;
 }
 
 function randomPose() {
@@ -96,15 +106,21 @@ function randomPose() {
   controls.NeckAngle = Math.random() * 80.0;
   controls.TorsoAngle = Math.random() * 90.0 - 45.0;
 
-  controls.FrontLeftLegTopAngle = Math.random() * 70.0 - 35.0;
-  controls.FrontRightLegTopAngle = Math.random() * 70.0 - 35.0;
-  controls.BackLeftLegTopAngle = Math.random() * 70.0 - 35.0;
-  controls.BackRightLegTopAngle = Math.random() * 70.0 - 35.0;
+  controls.FLTopLegAngle = Math.random() * 70.0 - 35.0;
+  controls.FRTopLegAngle = Math.random() * 70.0 - 35.0;
+  controls.BLTopLegAngle = Math.random() * 70.0 - 35.0;
+  controls.BRTopLegAngle = Math.random() * 70.0 - 35.0;
 
-  controls.FrontLeftLegAngle = Math.random() * 120.0;
-  controls.FrontRightLegAngle = Math.random() * 120.0;
-  controls.BackLeftLegAngle = Math.random() * 120.0;
-  controls.BackRightLegAngle = Math.random() * 120.0;
+  controls.FLBotLegAngle = Math.random() * 120.0;
+  controls.FRBotLegAngle = Math.random() * 120.0;
+  controls.BLBotLegAngle = Math.random() * 120.0;
+  controls.BRBotLegAngle = Math.random() * 120.0;
+}
+
+function randomLight() {
+  controls.LightXPos = Math.random() * 80.0 - 40.0;
+  controls.LightYPos = Math.random() * 80.0 - 40.0;
+  controls.LightZPos = Math.random() * 80.0 - 40.0;
 }
 
 function loadScene() {
@@ -139,24 +155,32 @@ function main() {
   const gui = new DAT.GUI();
   gui.add(controls, 'Random Horse');
   gui.add(controls, 'Random Pose');
+  gui.add(controls, 'Random Light');
+
   gui.add(controls, 'HeadLRAngle', -45, 45).step(1);
   gui.add(controls, 'HeadUDAngle', -45, 45).step(1);
   gui.add(controls, 'NeckAngle', 0, 80).step(1);
   gui.add(controls, 'TorsoAngle', -45, 45).step(1);
-  gui.add(controls, 'FrontLeftLegTopAngle', -35, 35).step(1);
-  gui.add(controls, 'FrontLeftLegAngle', 0, 120).step(1);
-  gui.add(controls, 'FrontRightLegTopAngle', -35, 35).step(1);
-  gui.add(controls, 'FrontRightLegAngle', 0, 120).step(1);
-  gui.add(controls, 'BackLeftLegTopAngle', -35, 35).step(1);
-  gui.add(controls, 'BackLeftLegAngle', 0, 120).step(1);
-  gui.add(controls, 'BackRightLegTopAngle', -35, 35).step(1);
-  gui.add(controls, 'BackRightLegAngle', 0, 120).step(1);
+  gui.add(controls, 'FLTopLegAngle', -35, 35).step(1);
+  gui.add(controls, 'FLBotLegAngle', 0, 120).step(1);
+  gui.add(controls, 'FRTopLegAngle', -35, 35).step(1);
+  gui.add(controls, 'FRBotLegAngle', 0, 120).step(1);
+  gui.add(controls, 'BLTopLegAngle', -35, 35).step(1);
+  gui.add(controls, 'BLBotLegAngle', 0, 120).step(1);
+  gui.add(controls, 'BRTopLegAngle', -35, 35).step(1);
+  gui.add(controls, 'BRBotLegAngle', 0, 120).step(1);
+
+  gui.add(controls, 'BackgroundColor', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade1', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade2', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade3', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade4', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade5', 0.0, 1.0).step(0.01);
+
   gui.add(controls, 'OutlineThickness', 0, 0.6).step(0.1);
+  gui.add(controls, 'NoiseIntensity', 5, 20).step(1);
+  gui.add(controls, 'NoiseOctaves', 3, 8).step(1);
+
   gui.add(controls, 'LightXPos', -40, 40).step(1);
   gui.add(controls, 'LightYPos', -40, 40).step(1);
   gui.add(controls, 'LightZPos', -40, 40).step(1);
@@ -217,46 +241,52 @@ function main() {
       flat.setTorsoAngle(controls.TorsoAngle);
     }
 
-    if(controls.FrontLeftLegTopAngle != prevFrontLeftLegTopAngle)
+    if(controls.FLTopLegAngle != prevFLTopLegAngle)
     {
-      prevFrontLeftLegTopAngle = controls.FrontLeftLegTopAngle;
-      flat.setFrontLeftLegTopAngle(controls.FrontLeftLegTopAngle);
+      prevFLTopLegAngle = controls.FLTopLegAngle;
+      flat.setFrontLeftLegTopAngle(controls.FLTopLegAngle);
     }
-    if(controls.FrontRightLegTopAngle != prevFrontRightLegTopAngle)
+    if(controls.FRTopLegAngle != prevFRTopLegAngle)
     {
-      prevFrontRightLegTopAngle = controls.FrontRightLegTopAngle;
-      flat.setFrontRightLegTopAngle(controls.FrontRightLegTopAngle);
+      prevFRTopLegAngle = controls.FRTopLegAngle;
+      flat.setFrontRightLegTopAngle(controls.FRTopLegAngle);
     }
-    if(controls.BackLeftLegTopAngle != prevBackLeftLegTopAngle)
+    if(controls.BLTopLegAngle != prevBLTopLegAngle)
     {
-      prevBackLeftLegTopAngle = controls.BackLeftLegTopAngle;
-      flat.setBackLeftLegTopAngle(controls.BackLeftLegTopAngle);
+      prevBLTopLegAngle = controls.BLTopLegAngle;
+      flat.setBackLeftLegTopAngle(controls.BLTopLegAngle);
     }
-    if(controls.BackRightLegTopAngle != prevBackRightLegTopAngle)
+    if(controls.BRTopLegAngle != prevBRTopLegAngle)
     {
-      prevBackRightLegTopAngle = controls.BackRightLegTopAngle;
-      flat.setBackRightLegTopAngle(controls.BackRightLegTopAngle);
+      prevBRTopLegAngle = controls.BRTopLegAngle;
+      flat.setBackRightLegTopAngle(controls.BRTopLegAngle);
     }
 
-    if(controls.FrontLeftLegAngle != prevFrontLeftLegAngle)
+    if(controls.FLBotLegAngle != prevFLBotLegAngle)
     {
-      prevFrontLeftLegAngle = controls.FrontLeftLegAngle;
-      flat.setFrontLeftLegAngle(controls.FrontLeftLegAngle);
+      prevFLBotLegAngle = controls.FLBotLegAngle;
+      flat.setFrontLeftLegAngle(controls.FLBotLegAngle);
     }
-    if(controls.FrontRightLegAngle != prevFrontRightLegAngle)
+    if(controls.FRBotLegAngle != prevFRBotLegAngle)
     {
-      prevFrontRightLegAngle = controls.FrontRightLegAngle;
-      flat.setFrontRightLegAngle(controls.FrontRightLegAngle);
+      prevFRBotLegAngle = controls.FRBotLegAngle;
+      flat.setFrontRightLegAngle(controls.FRBotLegAngle);
     }
-    if(controls.BackLeftLegAngle != prevBackLeftLegAngle)
+    if(controls.BLBotLegAngle != prevBLBotLegAngle)
     {
-      prevBackLeftLegAngle = controls.BackLeftLegAngle;
-      flat.setBackLeftLegAngle(controls.BackLeftLegAngle);
+      prevBLBotLegAngle = controls.BLBotLegAngle;
+      flat.setBackLeftLegAngle(controls.BLBotLegAngle);
     }
-    if(controls.BackRightLegAngle != prevBackRightLegAngle)
+    if(controls.BRBotLegAngle != prevBRBotLegAngle)
     {
-      prevBackRightLegAngle = controls.BackRightLegAngle;
-      flat.setBackRightLegAngle(controls.BackRightLegAngle);
+      prevBRBotLegAngle = controls.BRBotLegAngle;
+      flat.setBackRightLegAngle(controls.BRBotLegAngle);
+    }
+
+    if(controls.BackgroundColor != prevBackgroundColor)
+    {
+      prevBackgroundColor = controls.BackgroundColor;
+      flat.setBackgroundColor(controls.BackgroundColor);
     }
 
     if(controls.Shade1 != prevShade1)
@@ -289,6 +319,18 @@ function main() {
     {
       prevOutlineThickness = controls.OutlineThickness;
       flat.setOutlineThickness(controls.OutlineThickness);
+    }
+
+    if(controls.NoiseIntensity != prevNoiseIntensity)
+    {
+      prevNoiseIntensity = controls.NoiseIntensity;
+      flat.setNoiseIntensity(controls.NoiseIntensity);
+    }
+
+    if(controls.NoiseOctaves != prevNoiseOctaves)
+    {
+      prevNoiseOctaves = controls.NoiseOctaves;
+      flat.setNoiseOctaves(controls.NoiseOctaves);
     }
 
     if(controls.LightXPos != prevLightXPos)

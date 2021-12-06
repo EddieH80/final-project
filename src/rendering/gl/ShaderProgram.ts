@@ -49,22 +49,18 @@ class ShaderProgram {
   unifBackLeftLegAngle: WebGLUniformLocation;
   unifBackRightLegAngle: WebGLUniformLocation;
 
-  unifLegLength: WebGLUniformLocation;
-  unifNeckLength: WebGLUniformLocation;
-  unifMouthLength: WebGLUniformLocation;
-  unifTorsoLength: WebGLUniformLocation;
-
   unifShade1: WebGLUniformLocation;
   unifShade2: WebGLUniformLocation;
   unifShade3: WebGLUniformLocation;
   unifShade4: WebGLUniformLocation;
   unifShade5: WebGLUniformLocation;
 
-  unifOutlineThickness: WebGLUniformLocation;
+  unifBackgroundColor: WebGLUniformLocation;
 
-  unifLightXAngle: WebGLUniformLocation;
-  unifLightYAngle: WebGLUniformLocation;
-  unifLightZAngle: WebGLUniformLocation;
+  unifOutlineThickness: WebGLUniformLocation;
+  unifNoiseIntensity: WebGLUniformLocation;
+  unifNoiseOctaves: WebGLUniformLocation;
+
   unifLightXPos: WebGLUniformLocation;
   unifLightYPos: WebGLUniformLocation;
   unifLightZPos: WebGLUniformLocation;
@@ -108,27 +104,22 @@ class ShaderProgram {
     this.unifBackLeftLegTopAngle   = gl.getUniformLocation(this.prog, "u_BackLeftLegTopAngle");
     this.unifBackRightLegTopAngle   = gl.getUniformLocation(this.prog, "u_BackRightLegTopAngle");
 
-    this.unifLegLength   = gl.getUniformLocation(this.prog, "u_LegLength");
-
-    this.unifNeckLength   = gl.getUniformLocation(this.prog, "u_NeckLength");
-    this.unifMouthLength   = gl.getUniformLocation(this.prog, "u_MouthLength");
-    this.unifTorsoLength   = gl.getUniformLocation(this.prog, "u_TorsoLength");
-
     this.unifShade1   = gl.getUniformLocation(this.prog, "u_Shade1");
     this.unifShade2   = gl.getUniformLocation(this.prog, "u_Shade2");
     this.unifShade3   = gl.getUniformLocation(this.prog, "u_Shade3");
     this.unifShade4   = gl.getUniformLocation(this.prog, "u_Shade4");
     this.unifShade5   = gl.getUniformLocation(this.prog, "u_Shade5");
 
-    this.unifOutlineThickness   = gl.getUniformLocation(this.prog, "u_OutlineThickness");
+    this.unifBackgroundColor   = gl.getUniformLocation(this.prog, "u_BackgroundColor");
 
-    this.unifLightXAngle   = gl.getUniformLocation(this.prog, "u_LightXAngle");
-    this.unifLightYAngle   = gl.getUniformLocation(this.prog, "u_LightYAngle");
-    this.unifLightZAngle   = gl.getUniformLocation(this.prog, "u_LightZAngle");
+    this.unifOutlineThickness   = gl.getUniformLocation(this.prog, "u_OutlineThickness");
+    this.unifNoiseIntensity   = gl.getUniformLocation(this.prog, "u_NoiseIntensity");
+    this.unifNoiseOctaves   = gl.getUniformLocation(this.prog, "u_NoiseOctaves");
 
     this.unifLightXPos   = gl.getUniformLocation(this.prog, "u_LightXPos");
     this.unifLightYPos   = gl.getUniformLocation(this.prog, "u_LightYPos");
     this.unifLightZPos   = gl.getUniformLocation(this.prog, "u_LightZPos");
+
   }
 
   use() {
@@ -183,32 +174,6 @@ class ShaderProgram {
     this.use();
     if (this.unifViewProj !== -1) {
       gl.uniformMatrix4fv(this.unifViewProj, false, vp);
-    }
-  }
-
-  setMouthLength(t: number) {
-    this.use();
-    if (this.unifMouthLength !== -1) {
-      gl.uniform1f(this.unifMouthLength, t);
-    }
-  }
-  setNeckLength(t: number) {
-    this.use();
-    if (this.unifNeckLength !== -1) {
-      gl.uniform1f(this.unifNeckLength, t);
-    }
-  }
-  setTorsoLength(t: number) {
-    this.use();
-    if (this.unifTorsoLength !== -1) {
-      gl.uniform1f(this.unifTorsoLength, t);
-    }
-  }
-
-  setLegLength(t: number) {
-    this.use();
-    if (this.unifLegLength !== -1) {
-      gl.uniform1f(this.unifLegLength, t);
     }
   }
 
@@ -320,30 +285,18 @@ class ShaderProgram {
       gl.uniform1f(this.unifShade5, t);
     }
   }
+
+  setBackgroundColor(t: number) {
+    this.use();
+    if(this.unifBackgroundColor !== -1) {
+      gl.uniform1f(this.unifBackgroundColor, t);
+    }
+  }
   
   setOutlineThickness(t: number) {
     this.use();
     if(this.unifOutlineThickness !== -1) {
       gl.uniform1f(this.unifOutlineThickness, t);
-    }
-  }
-
-  setLightXAngle(t: number) {
-    this.use();
-    if(this.unifLightXAngle !== -1) {
-      gl.uniform1f(this.unifLightXAngle, t);
-    }
-  }
-  setLightYAngle(t: number) {
-    this.use();
-    if(this.unifLightYAngle !== -1) {
-      gl.uniform1f(this.unifLightYAngle, t);
-    }
-  }
-  setLightZAngle(t: number) {
-    this.use();
-    if(this.unifLightZAngle !== -1) {
-      gl.uniform1f(this.unifLightZAngle, t);
     }
   }
 
@@ -363,6 +316,19 @@ class ShaderProgram {
     this.use();
     if(this.unifLightZPos !== -1) {
       gl.uniform1f(this.unifLightZPos, t);
+    }
+  }
+
+  setNoiseIntensity(t: number) {
+    this.use();
+    if(this.unifNoiseIntensity !== -1) {
+      gl.uniform1f(this.unifNoiseIntensity, t);
+    }
+  }
+  setNoiseOctaves(t: number) {
+    this.use();
+    if(this.unifNoiseOctaves !== -1) {
+      gl.uniform1i(this.unifNoiseOctaves, t);
     }
   }
 
