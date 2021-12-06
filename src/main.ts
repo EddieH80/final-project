@@ -24,18 +24,11 @@ const controls = {
   FrontRightLegAngle: 0,
   BackLeftLegAngle: 0,
   BackRightLegAngle: 0,
-  LegLength: 4,
-  NeckLength: 4,
-  MouthLength: 4,
-  TorsoLength: 8,
   Shade1: 1.0,
   Shade2: 0.8,
   Shade3: 0.6,
   Shade4: 0.4,
   Shade5: 0.0,
-  LightXAngle: 0.0,
-  LightYAngle: 0.0,
-  LightZAngle: 0.0,
   LightXPos: -8.0,
   LightYPos: 40.0,
   LightZPos: -12.0,
@@ -60,20 +53,11 @@ let prevFrontRightLegAngle: number = 0;
 let prevBackLeftLegAngle: number = 0;
 let prevBackRightLegAngle: number = 0;
 
-let prevLegLength: number = 0;
-let prevNeckLength: number = 0;
-let prevMouthLength: number = 0;
-let prevTorsoLength: number = 0;
-
 let prevShade1: number = 0;
 let prevShade2: number = 0;
 let prevShade3: number = 0;
 let prevShade4: number = 0;
 let prevShade5: number = 0;
-
-let prevLightXAngle: number = 0;
-let prevLightYAngle: number = 0;
-let prevLightZAngle: number = 0;
 
 let prevLightXPos: number = 0;
 let prevLightYPos: number = 0;
@@ -167,19 +151,12 @@ function main() {
   gui.add(controls, 'BackLeftLegAngle', 0, 120).step(1);
   gui.add(controls, 'BackRightLegTopAngle', -35, 35).step(1);
   gui.add(controls, 'BackRightLegAngle', 0, 120).step(1);
-  // gui.add(controls, 'LegLength', 4, 10).step(1);
-  // gui.add(controls, 'NeckLength', 4, 10).step(1);
-  // gui.add(controls, 'MouthLength', 4, 10).step(1);
-  // gui.add(controls, 'TorsoLength', 8, 14).step(1);
   gui.add(controls, 'Shade1', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade2', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade3', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade4', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade5', 0.0, 1.0).step(0.01);
   gui.add(controls, 'OutlineThickness', 0, 0.6).step(0.1);
-  // gui.add(controls, 'LightXAngle', 0, 360).step(1);
-  // gui.add(controls, 'LightYAngle', 0, 360).step(1);
-  // gui.add(controls, 'LightZAngle', 0, 360).step(1);
   gui.add(controls, 'LightXPos', -40, 40).step(1);
   gui.add(controls, 'LightYPos', -40, 40).step(1);
   gui.add(controls, 'LightZPos', -40, 40).step(1);
@@ -282,27 +259,6 @@ function main() {
       flat.setBackRightLegAngle(controls.BackRightLegAngle);
     }
 
-    if(controls.LegLength != prevLegLength)
-    {
-      prevLegLength = controls.LegLength;
-      flat.setLegLength(controls.LegLength);
-    }
-    if(controls.NeckLength != prevNeckLength)
-    {
-      prevNeckLength = controls.NeckLength;
-      flat.setNeckLength(controls.NeckLength);
-    }
-    if(controls.MouthLength != prevMouthLength)
-    {
-      prevMouthLength = controls.MouthLength;
-      flat.setMouthLength(controls.MouthLength);
-    }
-    if(controls.TorsoLength != prevTorsoLength)
-    {
-      prevTorsoLength = controls.TorsoLength;
-      flat.setTorsoLength(controls.TorsoLength);
-    }
-
     if(controls.Shade1 != prevShade1)
     {
       prevShade1 = controls.Shade1;
@@ -335,21 +291,6 @@ function main() {
       flat.setOutlineThickness(controls.OutlineThickness);
     }
 
-    if(controls.LightXAngle != prevLightXAngle)
-    {
-      prevLightXAngle = controls.LightXAngle;
-      flat.setLightXAngle(controls.LightXAngle);
-    }
-    if(controls.LightYAngle != prevLightYAngle)
-    {
-      prevLightYAngle = controls.LightYAngle;
-      flat.setLightYAngle(controls.LightYAngle);
-    }
-    if(controls.LightZAngle != prevLightZAngle)
-    {
-      prevLightZAngle = controls.LightZAngle;
-      flat.setLightZAngle(controls.LightZAngle);
-    }
     if(controls.LightXPos != prevLightXPos)
     {
       prevLightXPos = controls.LightXPos;

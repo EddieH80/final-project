@@ -20,15 +20,6 @@ uniform float u_FrontRightLegAngle;
 uniform float u_BackLeftLegAngle;
 uniform float u_BackRightLegAngle;
 
-uniform float u_FrontLeftLegLength;
-uniform float u_FrontRightLegLength;
-uniform float u_BackLeftLegLength;
-uniform float u_BackRightLegLength;
-
-uniform float u_NeckLength;
-uniform float u_MouthLength;
-uniform float u_TorsoLength;
-
 uniform float u_Shade1;
 uniform float u_Shade2;
 uniform float u_Shade3;
@@ -52,37 +43,37 @@ const int RAY_STEPS = 256;
 
 ////////// GEOMETRY //////////
 // Main Body
-#define TORSO_SDF opDisplaceSin(ellipsoid(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -5.0), vec3(3.5, 3.5, u_TorsoLength)), rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -5.0), vec3(0.4))
-#define CHEST_SDF smoothBlend(TORSO_SDF, opDisplaceSin(sphere(pos + vec3(0.0, 0.0, -8.0 + u_TorsoLength), 3.5), pos + vec3(0.0, 0.0, -8.0 + u_TorsoLength), vec3(1.0)), 0.5)
-#define HIND_SDF smoothBlend(CHEST_SDF, opDisplaceSin(sphere(rotateY(pos + vec3(0.1) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_TorsoAngle) + vec3(0.0, 0.0, -12.0), 3.5), rotateY(pos + vec3(0.1) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_TorsoAngle) + vec3(0.0, 0.0, -13.0), vec3(0.3)), 0.5)
+#define TORSO_SDF opDisplaceSin(ellipsoid(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -5.0), vec3(3.5, 3.5, 8.0)), rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -5.0), vec3(0.4))
+#define CHEST_SDF smoothBlend(TORSO_SDF, opDisplaceSin(sphere(pos, 3.5), pos, vec3(1.0)), 0.5)
+#define HIND_SDF smoothBlend(CHEST_SDF, opDisplaceSin(sphere(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -12.0), 3.5), rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -13.0), vec3(0.3)), 0.5)
 
 // Legs
-#define FRONT_LEFT_LEG_TOP_SDF smoothBlend(HIND_SDF, roundCone(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5) + vec3(0.0, 0.0, -8.0 + u_TorsoLength), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), 0.5, 1.2, 6.0), 0.5)
-#define FRONT_LEFT_LEG_KNEE_SDF smoothBlend(FRONT_LEFT_LEG_TOP_SDF, sphere(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5) + vec3(0.0, 0.0, -8.0 + u_TorsoLength), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), 0.5), 0.5)
-#define FRONT_LEFT_LEG_BOT_SDF smoothBlend(roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5) + vec3(0.0, 0.0, -8.0 + u_TorsoLength), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), u_FrontLeftLegAngle) + vec3(0.0, 6.5, 0.0), 0.4, 0.2, 0.5), \
-roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5) + vec3(0.0, 0.0, -8.0 + u_TorsoLength), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), u_FrontLeftLegAngle) + vec3(0.0, 3.0, 0.0), 0.3, 0.1, 3.0), 0.5)
+#define FRONT_LEFT_LEG_TOP_SDF smoothBlend(HIND_SDF, roundCone(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), 0.5, 1.2, 6.0), 0.5)
+#define FRONT_LEFT_LEG_KNEE_SDF smoothBlend(FRONT_LEFT_LEG_TOP_SDF, sphere(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), 0.5), 0.5)
+#define FRONT_LEFT_LEG_BOT_SDF smoothBlend(roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), u_FrontLeftLegAngle) + vec3(0.0, 6.5, 0.0), 0.4, 0.2, 0.5), \
+roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), u_FrontLeftLegAngle) + vec3(0.0, 3.0, 0.0), 0.3, 0.1, 3.0), 0.5)
 #define FRONT_LEFT_LEG_SDF smoothBlend(FRONT_LEFT_LEG_KNEE_SDF, FRONT_LEFT_LEG_BOT_SDF, 0.5)
 
-#define FRONT_RIGHT_LEG_TOP_SDF smoothBlend(FRONT_LEFT_LEG_SDF, roundCone(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), -7.5) + vec3(0.0, 0.0, -8.0 + u_TorsoLength), u_FrontRightLegTopAngle) + vec3(-2.3, 8.0, 1.0), 0.5, 1.2, 6.0), 0.5)
-#define FRONT_RIGHT_LEG_KNEE_SDF smoothBlend(FRONT_RIGHT_LEG_TOP_SDF, sphere(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), -7.5) + vec3(0.0, 0.0, -8.0 + u_TorsoLength), u_FrontRightLegTopAngle) + vec3(-2.3, 8.0, 1.0), 0.5), 0.5)
-#define FRONT_RIGHT_LEG_BOT_SDF smoothBlend(roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), -7.5) + vec3(0.0, 0.0, -8.0 + u_TorsoLength), u_FrontRightLegTopAngle) + vec3(-2.3, 8.0, 1.0), u_FrontRightLegAngle) + vec3(0.0, 6.5, 0.2), 0.4, 0.2, 0.5), \
-roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), -7.5) + vec3(0.0, 0.0, -8.0 + u_TorsoLength), u_FrontRightLegTopAngle) + vec3(-2.3, 8.0, 1.0), u_FrontRightLegAngle) + vec3(0.0, 3.0, 0.2), 0.3, 0.1, 3.0), 0.5)
+#define FRONT_RIGHT_LEG_TOP_SDF smoothBlend(FRONT_LEFT_LEG_SDF, roundCone(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), -7.5), u_FrontRightLegTopAngle) + vec3(-2.3, 8.0, 1.0), 0.5, 1.2, 6.0), 0.5)
+#define FRONT_RIGHT_LEG_KNEE_SDF smoothBlend(FRONT_RIGHT_LEG_TOP_SDF, sphere(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), -7.5), u_FrontRightLegTopAngle) + vec3(-2.3, 8.0, 1.0), 0.5), 0.5)
+#define FRONT_RIGHT_LEG_BOT_SDF smoothBlend(roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), -7.5), u_FrontRightLegTopAngle) + vec3(-2.3, 8.0, 1.0), u_FrontRightLegAngle) + vec3(0.0, 6.5, 0.2), 0.4, 0.2, 0.5), \
+roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), -7.5), u_FrontRightLegTopAngle) + vec3(-2.3, 8.0, 1.0), u_FrontRightLegAngle) + vec3(0.0, 3.0, 0.2), 0.3, 0.1, 3.0), 0.5)
 #define FRONT_RIGHT_LEG_SDF smoothBlend(FRONT_RIGHT_LEG_KNEE_SDF, FRONT_RIGHT_LEG_BOT_SDF, 0.5)
 
-#define BACK_LEFT_LEG_TOP_SDF smoothBlend(FRONT_RIGHT_LEG_SDF, roundCone(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(-2.3, 2.0, -13.0), -7.5) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_BackLeftLegTopAngle) + vec3(0.0, 6.0, 0.0), 0.5, 1.2, 6.0), 0.5)
-#define BACK_LEFT_LEG_KNEE_SDF smoothBlend(BACK_LEFT_LEG_TOP_SDF, sphere(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(-2.3, 2.0, -13.0), -7.5) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_BackLeftLegTopAngle) + vec3(0.0, 6.0, 0.0), 0.5), 0.5)
-#define BACK_LEFT_LEG_BOT_SDF smoothBlend(roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(-2.3, 2.0, -13.0), -7.5) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_BackLeftLegTopAngle) + vec3(0.0, 6.0, 0.0), u_BackLeftLegAngle) + vec3(0.0, 6.5, 0.0), 0.4, 0.2, 0.5), \
-roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(-2.3, 2.0, -13.0), -7.5) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_BackLeftLegTopAngle) + vec3(0.0, 6.0, 0.0), u_BackLeftLegAngle) + vec3(0.0, 3.0, 0.0), 0.3, 0.1, 3.0), 0.5)
+#define BACK_LEFT_LEG_TOP_SDF smoothBlend(FRONT_RIGHT_LEG_SDF, roundCone(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(-2.3, 2.0, -13.0), -7.5), u_BackLeftLegTopAngle) + vec3(0.0, 6.0, 0.0), 0.5, 1.2, 6.0), 0.5)
+#define BACK_LEFT_LEG_KNEE_SDF smoothBlend(BACK_LEFT_LEG_TOP_SDF, sphere(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(-2.3, 2.0, -13.0), -7.5), u_BackLeftLegTopAngle) + vec3(0.0, 6.0, 0.0), 0.5), 0.5)
+#define BACK_LEFT_LEG_BOT_SDF smoothBlend(roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(-2.3, 2.0, -13.0), -7.5), u_BackLeftLegTopAngle) + vec3(0.0, 6.0, 0.0), u_BackLeftLegAngle) + vec3(0.0, 6.5, 0.0), 0.4, 0.2, 0.5), \
+roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(-2.3, 2.0, -13.0), -7.5), u_BackLeftLegTopAngle) + vec3(0.0, 6.0, 0.0), u_BackLeftLegAngle) + vec3(0.0, 3.0, 0.0), 0.3, 0.1, 3.0), 0.5)
 #define BACK_LEFT_LEG_SDF smoothBlend(BACK_LEFT_LEG_KNEE_SDF, BACK_LEFT_LEG_BOT_SDF, 0.5)
 
-#define BACK_RIGHT_LEG_TOP_SDF smoothBlend(BACK_LEFT_LEG_SDF, roundCone(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(2.3, 2.0, -13.0), 7.5) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_BackRightLegTopAngle) + vec3(0.0, 6.0, 0.0), 0.5, 1.2, 6.0), 0.5)
-#define BACK_RIGHT_LEG_KNEE_SDF smoothBlend(BACK_RIGHT_LEG_TOP_SDF, sphere(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(2.3, 2.0, -13.0), 7.5) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_BackRightLegTopAngle) + vec3(0.0, 6.0, 0.0), 0.5), 0.5)
-#define BACK_RIGHT_LEG_BOT_SDF smoothBlend(roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(2.3, 2.0, -13.0), 7.5) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_BackRightLegTopAngle) + vec3(0.0, 6.0, 0.0), u_BackRightLegAngle) + vec3(0.0, 6.5, 0.0), 0.4, 0.2, 0.5), \
-roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(2.3, 2.0, -13.0), 7.5) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_BackRightLegTopAngle) + vec3(0.0, 6.0, 0.0), u_BackRightLegAngle) + vec3(0.0, 3.0, 0.0), 0.3, 0.1, 3.0), 0.5)
+#define BACK_RIGHT_LEG_TOP_SDF smoothBlend(BACK_LEFT_LEG_SDF, roundCone(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(2.3, 2.0, -13.0), 7.5), u_BackRightLegTopAngle) + vec3(0.0, 6.0, 0.0), 0.5, 1.2, 6.0), 0.5)
+#define BACK_RIGHT_LEG_KNEE_SDF smoothBlend(BACK_RIGHT_LEG_TOP_SDF, sphere(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(2.3, 2.0, -13.0), 7.5), u_BackRightLegTopAngle) + vec3(0.0, 6.0, 0.0), 0.5), 0.5)
+#define BACK_RIGHT_LEG_BOT_SDF smoothBlend(roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(2.3, 2.0, -13.0), 7.5), u_BackRightLegTopAngle) + vec3(0.0, 6.0, 0.0), u_BackRightLegAngle) + vec3(0.0, 6.5, 0.0), 0.4, 0.2, 0.5), \
+roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(2.3, 2.0, -13.0), 7.5), u_BackRightLegTopAngle) + vec3(0.0, 6.0, 0.0), u_BackRightLegAngle) + vec3(0.0, 3.0, 0.0), 0.3, 0.1, 3.0), 0.5)
 #define BACK_RIGHT_LEG_SDF smoothBlend(BACK_RIGHT_LEG_KNEE_SDF, BACK_RIGHT_LEG_BOT_SDF, 0.5)
 
 // Head
-#define NECK_POS rotateX(pos + vec3(0.0, 0.0, 1.0) + vec3(0.0, 0.0, -8.0 + u_TorsoLength), u_NeckAngle)
+#define NECK_POS rotateX(pos + vec3(0.0, 0.0, 1.0), u_NeckAngle)
 #define NECK_SDF smoothBlend(BACK_RIGHT_LEG_SDF, roundCone(NECK_POS, 2.2, 1.9, 8.0), 0.5)
 #define HEAD_SDF smoothBlend(NECK_SDF, sphere(NECK_POS + vec3(0.0, -9.5, 0.0), 2.2), 0.5)
 #define LEFT_EAR_SDF smoothBlend(HEAD_SDF, roundCone(rotateX(rotateY(NECK_POS, u_HeadLRAngle) + vec3(-1.2, -11.5, 0.0), u_HeadUDAngle), 0.5, 0.2, 0.6), 0.5)
@@ -93,8 +84,8 @@ roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle) +
 // Hooves
 //#define HOOVES_SDF smoothBlend(roundedCylinder(pos + vec3(3.5, 13.0, 0.8), 0.4, 0.2, 0.5), smoothBlend(roundedCylinder(pos + vec3(-3.5, 13.0, 0.2), 0.4, 0.2, 0.5), smoothBlend(roundedCylinder(pos + vec3(-9.4, 13.0, -10.0), 0.4, 0.2, 0.5), roundedCylinder(pos + vec3(-5.2, 13.0, -11.0), 0.4, 0.2, 0.5), 0.5), 0.5), 0.5)
 
-#define MANE_SDF opDisplaceSin(box(rotateX(pos, u_NeckAngle) + vec3(0, -7.5, -1.0) + vec3(0.0, 0.0, -8.0 + u_TorsoLength), vec3(0.2, 4.0, 2.0)), pos, vec3(0.9))
-#define TAIL_SDF opDisplaceSin(box(rotateX(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, -2.0, -17.0) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), 10.0), vec3(0.2, 2.0, 3.0)), pos, vec3(1.05))
+#define MANE_SDF opDisplaceSin(box(rotateX(pos, u_NeckAngle) + vec3(0, -7.5, -1.0), vec3(0.2, 4.0, 2.0)), pos, vec3(0.9))
+#define TAIL_SDF opDisplaceSin(box(rotateX(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, -2.0, -17.0), 10.0), vec3(0.2, 2.0, 3.0)), pos, vec3(1.05))
 
 ////////// GEOMETRY ENDS //////////
 
@@ -413,10 +404,10 @@ vec3 computeNormal(vec3 pos, vec3 lightPos) {
 
 vec3 getSceneColor(int hitObj, vec3 p, vec3 n, vec3 light, vec3 view) {
     if(hitObj == -1) {
-      return vec3(1.f);
+      return vec3(1.f, 0.861f, 0.759f);
     }
     if(hitObj == MANE || hitObj == TAIL) {
-      return vec3(0.f);
+      return vec3(u_Shade5);
     }
     float intensity = dot(n, light);
     vec3 intensityNoise = fbm(p.x / 10.f, p.y / 10.f, p.z / 10.f);
