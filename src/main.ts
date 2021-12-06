@@ -24,7 +24,11 @@ const controls = {
   FrontRightLegAngle: 0,
   BackLeftLegAngle: 0,
   BackRightLegAngle: 0,
-  OutlineThickness: 0,
+  LegLength: 4,
+  NeckLength: 4,
+  MouthLength: 4,
+  TorsoLength: 8,
+  OutlineThickness: 0.4,
 };
 
 let square: Square;
@@ -44,6 +48,11 @@ let prevFrontLeftLegAngle: number = 0;
 let prevFrontRightLegAngle: number = 0;
 let prevBackLeftLegAngle: number = 0;
 let prevBackRightLegAngle: number = 0;
+
+let prevLegLength: number = 0;
+let prevNeckLength: number = 0;
+let prevMouthLength: number = 0;
+let prevTorsoLength: number = 0;
 
 let prevOutlineThickness: number = 0;
 
@@ -127,6 +136,10 @@ function main() {
   gui.add(controls, 'BackLeftLegAngle', 0, 120).step(1);
   gui.add(controls, 'BackRightLegTopAngle', -35, 35).step(1);
   gui.add(controls, 'BackRightLegAngle', 0, 120).step(1);
+  gui.add(controls, 'LegLength', 4, 10).step(1);
+  gui.add(controls, 'NeckLength', 4, 10).step(1);
+  gui.add(controls, 'MouthLength', 4, 10).step(1);
+  gui.add(controls, 'TorsoLength', 8, 14).step(1);
   gui.add(controls, 'OutlineThickness', 0, 0.6).step(0.1);
 
   // get canvas and webgl context
@@ -225,6 +238,27 @@ function main() {
     {
       prevBackRightLegAngle = controls.BackRightLegAngle;
       flat.setBackRightLegAngle(controls.BackRightLegAngle);
+    }
+
+    if(controls.LegLength != prevLegLength)
+    {
+      prevLegLength = controls.LegLength;
+      flat.setLegLength(controls.LegLength);
+    }
+    if(controls.NeckLength != prevNeckLength)
+    {
+      prevNeckLength = controls.NeckLength;
+      flat.setNeckLength(controls.NeckLength);
+    }
+    if(controls.MouthLength != prevMouthLength)
+    {
+      prevMouthLength = controls.MouthLength;
+      flat.setMouthLength(controls.MouthLength);
+    }
+    if(controls.TorsoLength != prevTorsoLength)
+    {
+      prevTorsoLength = controls.TorsoLength;
+      flat.setTorsoLength(controls.TorsoLength);
     }
 
     if(controls.OutlineThickness != prevOutlineThickness)

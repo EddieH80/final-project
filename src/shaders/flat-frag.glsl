@@ -20,6 +20,15 @@ uniform float u_FrontRightLegAngle;
 uniform float u_BackLeftLegAngle;
 uniform float u_BackRightLegAngle;
 
+uniform float u_FrontLeftLegLength;
+uniform float u_FrontRightLegLength;
+uniform float u_BackLeftLegLength;
+uniform float u_BackRightLegLength;
+
+uniform float u_NeckLength;
+uniform float u_MouthLength;
+uniform float u_TorsoLength;
+
 uniform float u_OutlineThickness;
 
 in vec4 fs_Pos;
@@ -33,13 +42,11 @@ const int RAY_STEPS = 256;
 
 ////////// GEOMETRY //////////
 // Main Body
-//+ vec3(3.5, 10.5, 0.8)
-#define CHEST_SDF opDisplaceSin(sphere(pos, 3.5), pos, vec3(1.0))
-#define TORSO_SDF smoothBlend(CHEST_SDF, opDisplaceSin(ellipsoid(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -5.0), vec3(3.5, 3.5, 8.0)), rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -5.0), vec3(0.4)), 0.5)
-#define HIND_SDF smoothBlend(TORSO_SDF, opDisplaceSin(sphere(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -12.0), 3.5), rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -13.0), vec3(0.3)), 0.5)
+#define TORSO_SDF opDisplaceSin(ellipsoid(rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -5.0), vec3(3.5, 3.5, u_TorsoLength)), rotateY(pos + vec3(0.1), u_TorsoAngle) + vec3(0.0, 0.0, -5.0), vec3(0.4))
+#define CHEST_SDF smoothBlend(TORSO_SDF, opDisplaceSin(sphere(pos + vec3(0.0, 0.0, -8.0 + u_TorsoLength), 3.5), pos + vec3(0.0, 0.0, -8.0 + u_TorsoLength), vec3(1.0)), 0.5)
+#define HIND_SDF smoothBlend(CHEST_SDF, opDisplaceSin(sphere(rotateY(pos + vec3(0.1) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_TorsoAngle) + vec3(0.0, 0.0, -12.0), 3.5), rotateY(pos + vec3(0.1) + vec3(0.0, 0.0, 8.0 - u_TorsoLength), u_TorsoAngle) + vec3(0.0, 0.0, -13.0), vec3(0.3)), 0.5)
 
 // Legs
-//+ vec3(3.4, 8.0, 0.8)
 #define FRONT_LEFT_LEG_TOP_SDF smoothBlend(HIND_SDF, roundCone(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), 0.5, 1.2, 6.0), 0.5)
 #define FRONT_LEFT_LEG_KNEE_SDF smoothBlend(FRONT_LEFT_LEG_TOP_SDF, sphere(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), 0.5), 0.5)
 #define FRONT_LEFT_LEG_BOT_SDF smoothBlend(roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), u_FrontLeftLegAngle) + vec3(0.0, 6.5, 0.0), 0.4, 0.2, 0.5), roundedCylinder(rotateX(rotateX(rotateZ(rotateY(pos + vec3(0.1), u_TorsoAngle), 7.5), u_FrontLeftLegTopAngle) + vec3(2.3, 8.0, 1.0), u_FrontLeftLegAngle) + vec3(0.0, 3.0, 0.0), 0.3, 0.1, 3.0), 0.5)

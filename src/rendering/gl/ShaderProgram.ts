@@ -49,6 +49,12 @@ class ShaderProgram {
   unifBackLeftLegAngle: WebGLUniformLocation;
   unifBackRightLegAngle: WebGLUniformLocation;
 
+  unifLegLength: WebGLUniformLocation;
+
+  unifNeckLength: WebGLUniformLocation;
+  unifMouthLength: WebGLUniformLocation;
+  unifTorsoLength: WebGLUniformLocation;
+
   unifOutlineThickness: WebGLUniformLocation;
 
   constructor(shaders: Array<Shader>) {
@@ -89,6 +95,12 @@ class ShaderProgram {
     this.unifFrontRightLegTopAngle   = gl.getUniformLocation(this.prog, "u_FrontRightLegTopAngle");
     this.unifBackLeftLegTopAngle   = gl.getUniformLocation(this.prog, "u_BackLeftLegTopAngle");
     this.unifBackRightLegTopAngle   = gl.getUniformLocation(this.prog, "u_BackRightLegTopAngle");
+
+    this.unifLegLength   = gl.getUniformLocation(this.prog, "u_LegLength");
+
+    this.unifNeckLength   = gl.getUniformLocation(this.prog, "u_NeckLength");
+    this.unifMouthLength   = gl.getUniformLocation(this.prog, "u_MouthLength");
+    this.unifTorsoLength   = gl.getUniformLocation(this.prog, "u_TorsoLength");
 
     this.unifOutlineThickness   = gl.getUniformLocation(this.prog, "u_OutlineThickness");
   }
@@ -145,6 +157,32 @@ class ShaderProgram {
     this.use();
     if (this.unifViewProj !== -1) {
       gl.uniformMatrix4fv(this.unifViewProj, false, vp);
+    }
+  }
+
+  setMouthLength(t: number) {
+    this.use();
+    if (this.unifMouthLength !== -1) {
+      gl.uniform1f(this.unifMouthLength, t);
+    }
+  }
+  setNeckLength(t: number) {
+    this.use();
+    if (this.unifNeckLength !== -1) {
+      gl.uniform1f(this.unifNeckLength, t);
+    }
+  }
+  setTorsoLength(t: number) {
+    this.use();
+    if (this.unifTorsoLength !== -1) {
+      gl.uniform1f(this.unifTorsoLength, t);
+    }
+  }
+
+  setLegLength(t: number) {
+    this.use();
+    if (this.unifLegLength !== -1) {
+      gl.uniform1f(this.unifLegLength, t);
     }
   }
 
