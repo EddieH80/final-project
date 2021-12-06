@@ -50,7 +50,6 @@ class ShaderProgram {
   unifBackRightLegAngle: WebGLUniformLocation;
 
   unifLegLength: WebGLUniformLocation;
-
   unifNeckLength: WebGLUniformLocation;
   unifMouthLength: WebGLUniformLocation;
   unifTorsoLength: WebGLUniformLocation;
@@ -62,6 +61,13 @@ class ShaderProgram {
   unifShade5: WebGLUniformLocation;
 
   unifOutlineThickness: WebGLUniformLocation;
+
+  unifLightXAngle: WebGLUniformLocation;
+  unifLightYAngle: WebGLUniformLocation;
+  unifLightZAngle: WebGLUniformLocation;
+  unifLightXPos: WebGLUniformLocation;
+  unifLightYPos: WebGLUniformLocation;
+  unifLightZPos: WebGLUniformLocation;
 
   constructor(shaders: Array<Shader>) {
     this.prog = gl.createProgram();
@@ -115,6 +121,14 @@ class ShaderProgram {
     this.unifShade5   = gl.getUniformLocation(this.prog, "u_Shade5");
 
     this.unifOutlineThickness   = gl.getUniformLocation(this.prog, "u_OutlineThickness");
+
+    this.unifLightXAngle   = gl.getUniformLocation(this.prog, "u_LightXAngle");
+    this.unifLightYAngle   = gl.getUniformLocation(this.prog, "u_LightYAngle");
+    this.unifLightZAngle   = gl.getUniformLocation(this.prog, "u_LightZAngle");
+
+    this.unifLightXPos   = gl.getUniformLocation(this.prog, "u_LightXPos");
+    this.unifLightYPos   = gl.getUniformLocation(this.prog, "u_LightYPos");
+    this.unifLightZPos   = gl.getUniformLocation(this.prog, "u_LightZPos");
   }
 
   use() {
@@ -311,6 +325,44 @@ class ShaderProgram {
     this.use();
     if(this.unifOutlineThickness !== -1) {
       gl.uniform1f(this.unifOutlineThickness, t);
+    }
+  }
+
+  setLightXAngle(t: number) {
+    this.use();
+    if(this.unifLightXAngle !== -1) {
+      gl.uniform1f(this.unifLightXAngle, t);
+    }
+  }
+  setLightYAngle(t: number) {
+    this.use();
+    if(this.unifLightYAngle !== -1) {
+      gl.uniform1f(this.unifLightYAngle, t);
+    }
+  }
+  setLightZAngle(t: number) {
+    this.use();
+    if(this.unifLightZAngle !== -1) {
+      gl.uniform1f(this.unifLightZAngle, t);
+    }
+  }
+
+  setLightXPos(t: number) {
+    this.use();
+    if(this.unifLightXPos !== -1) {
+      gl.uniform1f(this.unifLightXPos, t);
+    }
+  }
+  setLightYPos(t: number) {
+    this.use();
+    if(this.unifLightYPos !== -1) {
+      gl.uniform1f(this.unifLightYPos, t);
+    }
+  }
+  setLightZPos(t: number) {
+    this.use();
+    if(this.unifLightZPos !== -1) {
+      gl.uniform1f(this.unifLightZPos, t);
     }
   }
 

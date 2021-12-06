@@ -37,13 +37,17 @@ uniform float u_Shade5;
 
 uniform float u_OutlineThickness;
 
+uniform float u_LightXPos;
+uniform float u_LightYPos;
+uniform float u_LightZPos;
+
 in vec4 fs_Pos;
 in vec4 fs_Nor;
 out vec4 out_Col;
 
 const int RAY_STEPS = 256;
 #define DEG_TO_RAD 3.14159 / 180.0
-#define LIGHT_POS vec3(-8.0, 40.0, -12.0)
+#define LIGHT_POS vec3(u_LightXPos, u_LightYPos, u_LightZPos)
 #define MAX_RAY_Z 50.0;
 
 ////////// GEOMETRY //////////

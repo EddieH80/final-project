@@ -33,6 +33,12 @@ const controls = {
   Shade3: 0.6,
   Shade4: 0.4,
   Shade5: 0.0,
+  LightXAngle: 0.0,
+  LightYAngle: 0.0,
+  LightZAngle: 0.0,
+  LightXPos: -8.0,
+  LightYPos: 40.0,
+  LightZPos: -12.0,
   OutlineThickness: 0.4,
 };
 
@@ -64,6 +70,14 @@ let prevShade2: number = 0;
 let prevShade3: number = 0;
 let prevShade4: number = 0;
 let prevShade5: number = 0;
+
+let prevLightXAngle: number = 0;
+let prevLightYAngle: number = 0;
+let prevLightZAngle: number = 0;
+
+let prevLightXPos: number = 0;
+let prevLightYPos: number = 0;
+let prevLightZPos: number = 0;
 
 let prevOutlineThickness: number = 0;
 
@@ -153,16 +167,22 @@ function main() {
   gui.add(controls, 'BackLeftLegAngle', 0, 120).step(1);
   gui.add(controls, 'BackRightLegTopAngle', -35, 35).step(1);
   gui.add(controls, 'BackRightLegAngle', 0, 120).step(1);
-  gui.add(controls, 'LegLength', 4, 10).step(1);
-  gui.add(controls, 'NeckLength', 4, 10).step(1);
-  gui.add(controls, 'MouthLength', 4, 10).step(1);
-  gui.add(controls, 'TorsoLength', 8, 14).step(1);
+  // gui.add(controls, 'LegLength', 4, 10).step(1);
+  // gui.add(controls, 'NeckLength', 4, 10).step(1);
+  // gui.add(controls, 'MouthLength', 4, 10).step(1);
+  // gui.add(controls, 'TorsoLength', 8, 14).step(1);
   gui.add(controls, 'Shade1', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade2', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade3', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade4', 0.0, 1.0).step(0.01);
   gui.add(controls, 'Shade5', 0.0, 1.0).step(0.01);
   gui.add(controls, 'OutlineThickness', 0, 0.6).step(0.1);
+  // gui.add(controls, 'LightXAngle', 0, 360).step(1);
+  // gui.add(controls, 'LightYAngle', 0, 360).step(1);
+  // gui.add(controls, 'LightZAngle', 0, 360).step(1);
+  gui.add(controls, 'LightXPos', -40, 40).step(1);
+  gui.add(controls, 'LightYPos', -40, 40).step(1);
+  gui.add(controls, 'LightZPos', -40, 40).step(1);
 
   // get canvas and webgl context
   const canvas = <HTMLCanvasElement> document.getElementById('canvas');
@@ -177,7 +197,7 @@ function main() {
   // Initial call to load scene
   loadScene();
 
-  const camera = new Camera(vec3.fromValues(0, 0, -10), vec3.fromValues(0, 0, 0));
+  const camera = new Camera(vec3.fromValues(-15, 10, -10), vec3.fromValues(0, 0, 0));
 
   const renderer = new OpenGLRenderer(canvas);
   renderer.setClearColor(164.0 / 255.0, 233.0 / 255.0, 1.0, 1);
@@ -314,6 +334,39 @@ function main() {
       prevOutlineThickness = controls.OutlineThickness;
       flat.setOutlineThickness(controls.OutlineThickness);
     }
+
+    if(controls.LightXAngle != prevLightXAngle)
+    {
+      prevLightXAngle = controls.LightXAngle;
+      flat.setLightXAngle(controls.LightXAngle);
+    }
+    if(controls.LightYAngle != prevLightYAngle)
+    {
+      prevLightYAngle = controls.LightYAngle;
+      flat.setLightYAngle(controls.LightYAngle);
+    }
+    if(controls.LightZAngle != prevLightZAngle)
+    {
+      prevLightZAngle = controls.LightZAngle;
+      flat.setLightZAngle(controls.LightZAngle);
+    }
+    if(controls.LightXPos != prevLightXPos)
+    {
+      prevLightXPos = controls.LightXPos;
+      flat.setLightXPos(controls.LightXPos);
+    }
+    if(controls.LightYPos != prevLightYPos)
+    {
+      prevLightYPos = controls.LightYPos;
+      flat.setLightYPos(controls.LightYPos);
+    }
+    if(controls.LightZPos != prevLightZPos)
+    {
+      prevLightZPos = controls.LightZPos;
+      flat.setLightZPos(controls.LightZPos);
+    }
+
+
     processKeyPresses();
     renderer.render(camera, flat, [
       square,
