@@ -55,6 +55,12 @@ class ShaderProgram {
   unifMouthLength: WebGLUniformLocation;
   unifTorsoLength: WebGLUniformLocation;
 
+  unifShade1: WebGLUniformLocation;
+  unifShade2: WebGLUniformLocation;
+  unifShade3: WebGLUniformLocation;
+  unifShade4: WebGLUniformLocation;
+  unifShade5: WebGLUniformLocation;
+
   unifOutlineThickness: WebGLUniformLocation;
 
   constructor(shaders: Array<Shader>) {
@@ -101,6 +107,12 @@ class ShaderProgram {
     this.unifNeckLength   = gl.getUniformLocation(this.prog, "u_NeckLength");
     this.unifMouthLength   = gl.getUniformLocation(this.prog, "u_MouthLength");
     this.unifTorsoLength   = gl.getUniformLocation(this.prog, "u_TorsoLength");
+
+    this.unifShade1   = gl.getUniformLocation(this.prog, "u_Shade1");
+    this.unifShade2   = gl.getUniformLocation(this.prog, "u_Shade2");
+    this.unifShade3   = gl.getUniformLocation(this.prog, "u_Shade3");
+    this.unifShade4   = gl.getUniformLocation(this.prog, "u_Shade4");
+    this.unifShade5   = gl.getUniformLocation(this.prog, "u_Shade5");
 
     this.unifOutlineThickness   = gl.getUniformLocation(this.prog, "u_OutlineThickness");
   }
@@ -264,6 +276,37 @@ class ShaderProgram {
     }
   }
 
+  setShade1(t: number) {
+    this.use();
+    if(this.unifShade1 !== -1) {
+      gl.uniform1f(this.unifShade1, t);
+    }
+  }
+  setShade2(t: number) {
+    this.use();
+    if(this.unifShade2 !== -1) {
+      gl.uniform1f(this.unifShade2, t);
+    }
+  }
+  setShade3(t: number) {
+    this.use();
+    if(this.unifShade3 !== -1) {
+      gl.uniform1f(this.unifShade3, t);
+    }
+  }
+  setShade4(t: number) {
+    this.use();
+    if(this.unifShade4 !== -1) {
+      gl.uniform1f(this.unifShade4, t);
+    }
+  }
+  setShade5(t: number) {
+    this.use();
+    if(this.unifShade5 !== -1) {
+      gl.uniform1f(this.unifShade5, t);
+    }
+  }
+  
   setOutlineThickness(t: number) {
     this.use();
     if(this.unifOutlineThickness !== -1) {

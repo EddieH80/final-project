@@ -28,6 +28,11 @@ const controls = {
   NeckLength: 4,
   MouthLength: 4,
   TorsoLength: 8,
+  Shade1: 1.0,
+  Shade2: 0.8,
+  Shade3: 0.6,
+  Shade4: 0.4,
+  Shade5: 0.0,
   OutlineThickness: 0.4,
 };
 
@@ -54,6 +59,12 @@ let prevNeckLength: number = 0;
 let prevMouthLength: number = 0;
 let prevTorsoLength: number = 0;
 
+let prevShade1: number = 0;
+let prevShade2: number = 0;
+let prevShade3: number = 0;
+let prevShade4: number = 0;
+let prevShade5: number = 0;
+
 let prevOutlineThickness: number = 0;
 
 function randomHorse() {
@@ -71,6 +82,12 @@ function randomHorse() {
   controls.FrontRightLegAngle = Math.random() * 120.0;
   controls.BackLeftLegAngle = Math.random() * 120.0;
   controls.BackRightLegAngle = Math.random() * 120.0;
+
+  controls.Shade1 = Math.random();
+  controls.Shade2 = Math.random();
+  controls.Shade3 = Math.random();
+  controls.Shade4 = Math.random();
+  controls.Shade5 = Math.random();
 
   controls.OutlineThickness = Math.random() * 0.6;
 }
@@ -140,6 +157,11 @@ function main() {
   gui.add(controls, 'NeckLength', 4, 10).step(1);
   gui.add(controls, 'MouthLength', 4, 10).step(1);
   gui.add(controls, 'TorsoLength', 8, 14).step(1);
+  gui.add(controls, 'Shade1', 0.0, 1.0).step(0.01);
+  gui.add(controls, 'Shade2', 0.0, 1.0).step(0.01);
+  gui.add(controls, 'Shade3', 0.0, 1.0).step(0.01);
+  gui.add(controls, 'Shade4', 0.0, 1.0).step(0.01);
+  gui.add(controls, 'Shade5', 0.0, 1.0).step(0.01);
   gui.add(controls, 'OutlineThickness', 0, 0.6).step(0.1);
 
   // get canvas and webgl context
@@ -261,6 +283,32 @@ function main() {
       flat.setTorsoLength(controls.TorsoLength);
     }
 
+    if(controls.Shade1 != prevShade1)
+    {
+      prevShade1 = controls.Shade1;
+      flat.setShade1(controls.Shade1);
+    }
+    if(controls.Shade2 != prevShade2)
+    {
+      prevShade2 = controls.Shade2;
+      flat.setShade2(controls.Shade2);
+    }
+    if(controls.Shade3 != prevShade3)
+    {
+      prevShade3 = controls.Shade3;
+      flat.setShade3(controls.Shade3);
+    }
+    if(controls.Shade4 != prevShade4)
+    {
+      prevShade4 = controls.Shade4;
+      flat.setShade4(controls.Shade4);
+    }
+    if(controls.Shade5 != prevShade5)
+    {
+      prevShade5 = controls.Shade5;
+      flat.setShade5(controls.Shade5);
+    }
+    
     if(controls.OutlineThickness != prevOutlineThickness)
     {
       prevOutlineThickness = controls.OutlineThickness;
