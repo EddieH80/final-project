@@ -8,7 +8,7 @@ My final project is motivated by a Chinese painting of some horses by an artist 
 
 #### Goal
 
-Create a shader in WebGL that takes in an SDF scene and stylizes the appearance of the geometry to make it look like a traditional Chinese ink painting. Specifically will create a horse SDF scene to mimic the inspiration paintings.
+Create a shader in WebGL that takes in an SDF scene and stylizes the appearance of the geometry to make it look like a traditional Chinese ink painting. Specifically will create a movable SDF horse model to mimic the inspiration of the project.
 
 #### Inspiration/reference:
 
@@ -33,11 +33,13 @@ References:
 
 
 #### Specification:
+- Raymarching and SDFs
 - Ink Shader
 - User Input
-  - Change intensity of color bleeding
-  - Change intensity of edge darkening
-  - Change intensity of hand tremors
+  - Change width of outline
+  - Change noise in shading
+  - Change pose of model
+  - Change position of light
 
 #### Techniques:
 - Raymarching
@@ -45,13 +47,9 @@ References:
 - SDFs
   - Used to determine the ray's distance between objects in the scene
 - Noise Functions
-  - Used to displace vertices to mimic the effect of a brush stroke 
-- Color Bleeding
-  - Used to mimic the effect of the ink bleeding on the page by directly deforming the geometry using noise
-- Edge Darkening
-  - Taking the difference of the Gaussian blur of the image and the regular image and exponentiating it to darken the edges
-- Gaussian Blur
-  - To add a smear effect in some portions of the scene 
+  - Used to displace vertices and act as threshold for 
+- Toon Shading
+  - Used to create the general non-photorealistic shading effect
 
 #### Design:
 ![](FlowChart.png)
@@ -59,9 +57,9 @@ References:
 #### Timeline:
 Week 1: Create main SDF scene with basic shading
 
-Week 2: Create vertex shader and fragment shader that create the ink painting effect
+Week 2: Create shader that creates the ink painting effect
 
-Week 3: Fine tune details, can add basic elements to background
+Week 3: Fine tune details and add user input
 
 ## Milestone 2: Implementation part 1 (due 11/22)
 
