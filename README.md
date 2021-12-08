@@ -1,6 +1,6 @@
 # Final Project!
 
-Live Demo: (In Progress)
+Live Demo: 
 
 ## Milestone 1: Project planning (due 11/15)
 
