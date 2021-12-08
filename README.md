@@ -52,6 +52,8 @@ References:
   - Used to displace vertices and act as threshold for 
 - Toon Shading
   - Used to create the general non-photorealistic shading effect
+- User Input
+  - Vary the position of the model as well as the shading
 
 #### Design:
 ![](FlowChart.png)
