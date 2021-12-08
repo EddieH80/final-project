@@ -1,5 +1,7 @@
 # Final Project!
 
+Live Demo: (In Progress)
+
 ## Milestone 1: Project planning (due 11/15)
 
 #### Introduction
@@ -76,16 +78,6 @@ Implemented a toon shading effect mixed with some FBM noise to shade in the hors
 ![](Milestone3.2.png)
 
 ## Final submission (due 12/6)
-Time to polish! Spen this last week of your project using your generator to produce beautiful output. Add textures, tune parameters, play with colors, play with camera animation. Take the feedback from class critques and use it to take your project to the next level.
-
-Submission:
-- Push all your code / files to your repository
-- Come to class ready to present your finished project
-- Update your README with two sections 
-  - final results with images and a live demo if possible
-  - post mortem: how did your project go overall? Did you accomplish your goals? Did you have to pivot?
-
-Live Demo: (In Progress)
 
 Resulting Images:
 
