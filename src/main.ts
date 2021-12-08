@@ -10,8 +10,10 @@ import ShaderProgram, {Shader} from './rendering/gl/ShaderProgram';
 // Define an object with application parameters and button callbacks
 // This will be referred to by dat.GUI's functions that add GUI elements.
 const controls = {
+  'Default Scene': defaultScene,
   'Random Horse': randomHorse,
   'Random Pose': randomPose,
+  'Random Shade': randomShade,
   'Random Light': randomLight,
   HeadLRAngle: 0,
   HeadUDAngle: 0,
@@ -73,6 +75,39 @@ let prevOutlineThickness: number = 0;
 let prevNoiseIntensity: number = 0;
 let prevNoiseOctaves: number = 0;
 
+function defaultScene() {
+  controls.HeadLRAngle = 0.0;
+  controls.HeadUDAngle = 0.0;
+  controls.NeckAngle = 30.0;
+  controls.TorsoAngle = 0.0;
+
+  controls.FLTopLegAngle = 0.0;
+  controls.FRTopLegAngle = 0.0;
+  controls.BLTopLegAngle = 0.0;
+  controls.BRTopLegAngle = 0.0
+
+  controls.FLBotLegAngle = 0.0;
+  controls.FRBotLegAngle = 0.0;
+  controls.BLBotLegAngle = 0.0;
+  controls.BRBotLegAngle = 0.0;
+
+  controls.BackgroundColor = 0.5;
+
+  controls.LightXPos = -8.0;
+  controls.LightYPos = 40.0;
+  controls.LightZPos = -12.0;
+
+  controls.Shade1 = 1.0;
+  controls.Shade2 = 0.8;
+  controls.Shade3 = 0.6;
+  controls.Shade4 = 0.4;
+  controls.Shade5 = 0.0;
+
+  controls.OutlineThickness = 0.4;
+  controls.NoiseIntensity = 10.0;
+  controls.NoiseOctaves = 4.0;
+}
+
 function randomHorse() {
   controls.HeadLRAngle = Math.random() * 90.0 - 45.0;
   controls.HeadUDAngle = Math.random() * 90.0 - 45.0;
@@ -117,6 +152,18 @@ function randomPose() {
   controls.BRBotLegAngle = Math.random() * 120.0;
 }
 
+function randomShade() {
+  controls.Shade1 = Math.random();
+  controls.Shade2 = Math.random();
+  controls.Shade3 = Math.random();
+  controls.Shade4 = Math.random();
+  controls.Shade5 = Math.random();
+
+  controls.OutlineThickness = Math.random() * 0.6;
+  controls.NoiseIntensity = Math.random() * 15.0 + 5.0;
+  controls.NoiseOctaves = Math.random() * 5.0 + 3.0;
+}
+
 function randomLight() {
   controls.LightXPos = Math.random() * 80.0 - 40.0;
   controls.LightYPos = Math.random() * 80.0 - 40.0;
@@ -153,8 +200,10 @@ function main() {
 
   // // Add controls to the gui
   const gui = new DAT.GUI();
+  gui.add(controls, 'Default Scene');
   gui.add(controls, 'Random Horse');
   gui.add(controls, 'Random Pose');
+  gui.add(controls, 'Random Shade');
   gui.add(controls, 'Random Light');
 
   gui.add(controls, 'HeadLRAngle', -45, 45).step(1);
@@ -198,7 +247,7 @@ function main() {
   // Initial call to load scene
   loadScene();
 
-  const camera = new Camera(vec3.fromValues(-15, 10, -10), vec3.fromValues(0, 0, 0));
+  const camera = new Camera(vec3.fromValues(-13, 10, -7), vec3.fromValues(0, 0, 0));
 
   const renderer = new OpenGLRenderer(canvas);
   renderer.setClearColor(164.0 / 255.0, 233.0 / 255.0, 1.0, 1);
