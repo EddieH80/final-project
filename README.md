@@ -101,6 +101,10 @@ Resulting Images:
 
 ![](Horse5.png)
 
+![](Horse6.png)
+
+![](Horse7.png)
+
 ### Post Mortem
 
 Overall I would say I am fairly happy with how my project turned out, although it ended up being quite different then what I wanted to do with it going into things. I think this is mainly because I was still a bit vague of what I wanted to accomplish with my project because I wasn't sure how to implement all of the 
