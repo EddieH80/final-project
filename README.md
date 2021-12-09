@@ -1,6 +1,6 @@
 # Final Project!
 
-Live Demo: 
+## Live Demo:  https://eddieh80.github.io/final-project/
 
 ## Milestone 1: Project planning (due 11/15)
 
