@@ -2,7 +2,7 @@
 
 ## Live Demo:  https://eddieh80.github.io/final-project/
 
-## Milestone 1: Project planning (due 11/15)
+## Milestone 1: Project planning ]]
 
 #### Introduction
 
@@ -65,13 +65,13 @@ Week 2: Create shader that creates the ink painting effect
 
 Week 3: Fine tune details and add user input
 
-## Milestone 2: Implementation part 1 (due 11/22)
+## Milestone 2: Implementation part 1
 
 So far, I am a bit behind in terms of my project goals mainly because last week was quite busy for me. Conceptually the SDF modeling of the scene is not too difficult for me since I have done it before in the homeworks, but fine tuning the parameters still takes a while.
 
 ![](Milestone2.1.png)
 
-## Milestone 3: Implementation part 2 (due 11/29)
+## Milestone 3: Implementation part 2
 
 Implemented a toon shading effect mixed with some FBM noise to shade in the horse SDF model. Also added geometry for the mane and tail and also added a displacement function to distort the geometry a bit to create a more natural feel. Still need to improve the shader to make it look more ink like, and also need to add user input in order to generate variations of the same horse by changing the base color, changing limb length, changing the angle of the legs, etc.. Will prioritize adding features to generate variations of the horse model for the final deadline.
 
@@ -79,7 +79,7 @@ Implemented a toon shading effect mixed with some FBM noise to shade in the hors
 
 ![](Milestone3.2.png)
 
-## Final submission (due 12/6)
+## Final submission
 
 Resulting Images:
 
