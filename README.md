@@ -2,7 +2,7 @@
 
 ## Live Demo:  https://eddieh80.github.io/final-project/
 
-## Milestone 1: Project planning ]]
+## Milestone 1: Project planning
 
 #### Introduction
 
