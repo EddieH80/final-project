@@ -16,15 +16,15 @@ Create a shader in WebGL that takes in an SDF scene and stylizes the appearance 
 
 Picture of the painting at home:
 
-![](Horse.png)
+![](images/Horse.png)
 
 Picture of just one horse by same artist:
 
-![](OneHorse.png)
+![](images/OneHorse.png)
 
 References:
 
-![](Example1.png)
+![](images/Example1.png)
 
 - Color Slides (https://cis566-procedural-graphics.github.io/color.pdf)
 - Hatching GLSL (https://www.youtube.com/watch?v=ml9v8PZ5j10&ab_channel=helloworld)
@@ -56,7 +56,7 @@ References:
   - Vary the position of the model as well as the shading
 
 #### Design:
-![](FlowChart.png)
+![](images/FlowChart.png)
 
 #### Timeline:
 Week 1: Create main SDF scene with basic shading
@@ -69,35 +69,35 @@ Week 3: Fine tune details and add user input
 
 So far, I am a bit behind in terms of my project goals mainly because last week was quite busy for me. Conceptually the SDF modeling of the scene is not too difficult for me since I have done it before in the homeworks, but fine tuning the parameters still takes a while.
 
-![](Milestone2.1.png)
+![](images/Milestone2.1.png)
 
 ## Milestone 3: Implementation part 2
 
 Implemented a toon shading effect mixed with some FBM noise to shade in the horse SDF model. Also added geometry for the mane and tail and also added a displacement function to distort the geometry a bit to create a more natural feel. Still need to improve the shader to make it look more ink like, and also need to add user input in order to generate variations of the same horse by changing the base color, changing limb length, changing the angle of the legs, etc.. Will prioritize adding features to generate variations of the horse model for the final deadline.
 
-![](Milestone3.1.png)
+![](images/Milestone3.1.png)
 
-![](Milestone3.2.png)
+![](images/Milestone3.2.png)
 
 ## Final submission
 
 Resulting Images:
 
-![](GUI.png)
+![](images/GUI.png)
 
-![](Horse1.png)
+![](images/Horse1.png)
 
-![](Horse2.png)
+![](images/Horse2.png)
 
-![](Horse3.png)
+![](images/Horse3.png)
 
-![](Horse4.png)
+![](images/Horse4.png)
 
-![](Horse5.png)
+![](images/Horse5.png)
 
-![](Horse6.png)
+![](images/Horse6.png)
 
-![](Horse7.png)
+![](images/Horse7.png)
 
 ### Post Mortem
 
